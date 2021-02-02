@@ -17,7 +17,7 @@ class User_model extends CI_Model
         return $this->db->insert('users', $data);
     }
 
-    public function updateProfile()
+    public function updateProfile($data)
     {
     }
 }

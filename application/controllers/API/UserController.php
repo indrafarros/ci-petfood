@@ -106,4 +106,8 @@ class UserController extends RestController
             ], 400);
         }
     }
+
+    public function updateProfile_post()
+    {
+    }
 }
