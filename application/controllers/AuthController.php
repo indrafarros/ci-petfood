@@ -39,9 +39,10 @@ class AuthController extends CI_Controller
             [
                 'field' => 'email',
                 'label' => 'Email',
-                'rules' => 'required|valid_email',
+                'rules' => 'required|valid_email|is_unique[users.email]',
                 'errors' => [
-                    'required' => 'This field cannot be null.'
+                    'required' => 'This field cannot be null.',
+                    'is_unique' => 'This email has already registered!'
                 ],
             ],
             [
@@ -194,6 +195,40 @@ class AuthController extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('auth/register');
         } else {
+            $data = array(
+                'first_name' => html_escape($_POST['first_name']),
+                'last_name' => html_escape($_POST['last_name']),
+                'email' => $_POST['email'],
+                'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                'picture_path' => 'default.png',
+                'phone_number' => '',
+                'address' => '',
+                'role_id' => 2,
+                'is_active' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+
+            $insert = $this->auth->registration($data);
+
+            if ($insert) {
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                Registration successful, please check your email for verication! </div>');
+                redirect('auth', 'refresh');
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                Something wrong, please try again! </div>');
+                redirect('qwe');
+            }
+        }
+    }
+    public function registrationa()
+    {
+        $this->_configRules();
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('auth/register');
+        } else {
             $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', [
                 'is_unique' => 'This email has already registered!'
             ]);
@@ -205,11 +240,13 @@ class AuthController extends CI_Controller
                     'last_name' => html_escape($_POST['last_name']),
                     'email' => $_POST['email'],
                     'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-                    'phone' => '0',
-                    'create_at' => time(),
-                    'update_at' => time(),
+                    'picture_path' => 'default.png',
+                    'phone_number' => '',
+                    'address' => '',
+                    'role_id' => 2,
                     'is_active' => 0,
-                    'roles' => '1'
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
                 );
                 $this->form_validation->set_data($data);
 
@@ -222,14 +259,14 @@ class AuthController extends CI_Controller
                     'deleted_at' => ''
                 );
 
-                $insert = $this->auth->register($data);
-                $this->auth->create_account_verification($data_token, 'register');
+                $insert = $this->auth->registration($data);
+                // $this->auth->create_account_verification($data_token, 'register');
 
                 if ($insert) {
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                     Registration successful, please check your email for verication! </div>');
-                    $this->_sendEmail($token, 'verify');
-                    redirect('auth');
+                    // $this->_sendEmail($token, 'verify');
+                    // redirect('auth');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                     Something wrong, please try again! </div>');

@@ -16,6 +16,7 @@ class API_AuthController extends CI_Controller
             'email' => 'asd@asd.com',
             'password' => 'tes'
         );
+
         $str_data = json_encode($data);
 
         $curl = curl_init();
@@ -35,10 +36,20 @@ class API_AuthController extends CI_Controller
             ),
         ));
 
+
+
+        $dt = [
+            'csrfName' => $this->security->get_csrf_token_name(),
+            'csrfHash' => $this->security->get_csrf_hash()
+        ];
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
+
+        $response = array(
+            'curl_exec' => $curl,
+        );
+        echo json_encode($response, $dt);
     }
 
     public function registration()
