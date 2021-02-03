@@ -7,6 +7,11 @@ class AuthController extends CI_Controller
         parent::__construct();
 
         $this->load->model('Auth_model', 'auth');
+
+        $this->_url = 'http://localhost/ignited-petfood/authcontroller';
+        $this->api_key = '';
+        $this->api_user = '';
+        $this->api_pass = '';
     }
 
     private function _configRules()

@@ -8,13 +8,16 @@ class UserController extends RestController
     public function __construct()
     {
         parent::__construct();
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
         $this->load->model('API/User_model', 'user');
     }
 
     public function login_post()
     {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        $email = $this->post('email');
+        $password = $this->post('password');
+
 
         if (!empty($email) && !empty($password)) {
             $user_check = $this->user->getEmail($email);
@@ -34,12 +37,14 @@ class UserController extends RestController
                     ], 200);
                 } else {
                     $this->response([
+                        'code' => 404,
                         'status' => false,
                         'message' => 'Email or password wrong'
                     ], 404);
                 }
             } else {
                 $this->response([
+                    'code' => 404,
                     'status' => false,
                     'message' => 'Email or password wrong'
                 ], 404);
@@ -47,7 +52,8 @@ class UserController extends RestController
         } else {
             $this->response([
                 'status' => false,
-                'message' => 'Email and password are required'
+                'message' => 'Email and password are required',
+                'data' => $this->post('email')
             ], 404);
         }
     }

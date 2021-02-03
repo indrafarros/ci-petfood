@@ -37,7 +37,7 @@
 
                             <div class="card-body">
                                 <?= $this->session->flashdata('message'); ?>
-                                <form id="login" method="POST" action="<?= base_url('auth/login') ?>" class="needs-validation" novalidate="">
+                                <form method="POST" class="needs-validation" novalidate="">
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
@@ -50,14 +50,14 @@
                                         <div class="d-block">
                                             <label for="password" class="control-label">Password</label>
                                             <div class="float-right">
-                                                <a href="auth-forgot-password.html" class="text-small">
+                                                <a href="<?= base_url('auth/forgot-password') ?>" class="text-small">
                                                     Forgot Password?
                                                 </a>
                                             </div>
                                         </div>
                                         <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
                                         <div class="invalid-feedback">
-                                            please fill in your password
+                                            Please fill in your password
                                         </div>
                                     </div>
 
@@ -69,7 +69,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                        <button type="button" id="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                                             Login
                                         </button>
                                     </div>
@@ -120,17 +120,23 @@
     <!-- Page Specific JS File -->
 
     <script>
-        function login() {
+        // $('#loginForm').submit(function(event) {
+        $(document).on('click', '#submit', function(e) {
+
             $.ajax({
-                url: '<?= base_url("auth/login") ?>',
+                url: '<?= base_url("API_AuthController/login") ?>',
                 type: "post",
                 dataType: "json",
-                data: $("#login").serialize(),
+                data: {
+                    'email': $('#email').val(),
+                    'password': $('#password').val()
+                },
                 success: function(res) {
-
+                    console.log('Success');
+                    // console.log(res);
                 }
             });
-        }
+        })
     </script>
 </body>
 
