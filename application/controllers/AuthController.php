@@ -2,6 +2,12 @@
 
 class AuthController extends CI_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->load->model('Auth_model', 'auth');
+    }
 
     private function _configRules()
     {
@@ -120,7 +126,11 @@ class AuthController extends CI_Controller
 
     public function index()
     {
-        $this->login();
+        redirect('auth/login');
+    }
+
+    public function loginAPI()
+    {
     }
 
     public function login()
@@ -130,9 +140,7 @@ class AuthController extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $data['title'] = 'Login';
-            $this->load->view('templates/auth/header', $data);
-            $this->load->view('auth/login');
-            $this->load->view('templates/auth/footer');
+            $this->load->view('auth/login', $data);
         } else {
             $this->_hasLogin();
         }
@@ -143,38 +151,35 @@ class AuthController extends CI_Controller
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $user = $this->auth->user($email);
+        $user = $this->auth->getUser($email);
+
         if ($user) {
             if ($user['is_active'] == 1) {
                 if (password_verify($password, $user['password'])) {
                     $session = [
                         'is_login' => 'true',
                         'first_name' => $user['first_name'],
-                        'email' => $user['email'],
-                        'roles' => $user['roles']
+                        'role_id' => $user['role_id']
                     ];
                     $this->session->set_userdata($session);
                     if ($user['roles'] == 1) {
                         redirect('admin/dashboard');
                     } else {
                         redirect('admin/dashboard');
-                        // redirect('user/dashboard');
-                        // redirect('user');
                     }
                 } else {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                    Wrong password! </div>');
-                    redirect('auth');
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email or password wrong! </div>');
+                    redirect('auth/login');
                 }
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                Email has not been activated! </div>');
-                redirect('auth');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email has not been activated! </div>');
+                redirect('auth/login');
             }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            Email or password wrong! </div>');
+            redirect('auth/login');
         }
-        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-        Email has not registered! </div>');
-        redirect('auth');
     }
 
     public function registration()
