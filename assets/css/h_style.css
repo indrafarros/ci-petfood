@@ -1,0 +1,398 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.backTop {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-block;
+    padding: 1em;
+    margin: 1em;
+    background: #E8E8E8;
+    border: 2px solid #000;
+    z-index: 999;
+}
+
+.backTop:hover {
+    cursor: pointer;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    height: 100%;
+}
+
+.navbar {
+    position: relative;
+    z-index: 1;
+}
+
+.navbar-brand {
+    font-family: 'Merienda One', cursive;
+    font-size: 32px;
+}
+
+/* Jumbotroon */
+
+.jb-1 {
+    background-image: url(/cisewa/assets/cover-kamera.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 520px;
+    position: relative;
+}
+
+.jb-2 {
+    background-image: url(/cisewa/assets/jb-2.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 520px;
+    position: relative;
+}
+
+.jumbotron .container {
+    position: relative;
+    z-index: 1;
+}
+
+.jumbotron::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    position: absolute;
+    bottom: 0;
+}
+
+.jumbotron .display-4 {
+    color: #fff;
+    margin-top: 90px;
+    font-size: 40px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9);
+    margin-bottom: 35px;
+}
+
+.jumbotron .display-4 span {
+    font-weight: bold;
+}
+
+/* Card Panel */
+
+.panel-card {
+    background-color: #fff;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    margin-top: -75px;
+    padding: 30px;
+}
+
+.panel-card h4 {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Content 1 */
+
+.content1 {
+    margin-top: 120px;
+    text-align: center;
+}
+
+.content1 h2 {
+    font-size: 53px;
+    font-weight: 300;
+    margin-top: 35px;
+    margin-left: 20px;
+}
+
+.content1 h2 span {
+    font-weight: 500;
+}
+
+.content1 p {
+    margin: 20px;
+    font-weight: 300;
+}
+
+.content1 img {
+    border-radius: 5px;
+}
+
+.content2 {
+    margin-top: 40px;
+}
+
+.content2 h3 {
+    font-size: 18px;
+}
+
+.title::before {
+    content: '';
+    display: block;
+    border-top: 2px solid red;
+    width: 20%;
+    margin: auto;
+    margin-top: -10px;
+}
+
+.content2 .card {
+    margin-top: 30px;
+    background-color: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.content2 .quote h4 {
+    margin-top: 10px;
+}
+
+.content2 .quote p {
+    margin-top: 20px;
+}
+
+.content3 {
+    margin-top: 50px;
+}
+
+.content3 .figure img {
+    margin: 50px 20px 10px;
+    width: 80px;
+    height: 90px;
+    opacity: 0.7;
+}
+
+.content3 .figure img.first {
+    width: 110px;
+    height: 120px;
+    opacity: 1;
+    margin-top: 20px;
+}
+
+.content3 .figure h5 {
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    color: black;
+}
+
+.content3 .figure p {
+    text-align: center;
+}
+
+.content3::before {
+    content: '';
+    display: block;
+    border-top: 2px solid red;
+    width: 12%;
+    margin: auto;
+}
+
+.content4 {
+    margin-top: 90px;
+}
+
+.carousel-promo {
+    width: 420px;
+}
+
+.content4 .carousel-item img {
+    border-radius: 10px;
+}
+
+.content4 .car-quote {
+    text-align: center;
+}
+
+.content4 .car-quote h3 {
+    margin-top: 40px;
+}
+
+.content4 .car-quote p {
+    margin-top: 25px;
+}
+
+.contact {
+    background-color: #292b2c;
+    margin-top: 120px;
+    text-align: center;
+}
+
+.contact h3 {
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 32px;
+    margin-top: 32px;
+}
+
+.contact p {
+    margin-top: 25px;
+    font-weight: 200;
+}
+
+.contact span {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.contact .gmap {
+    height: 250px !important;
+    width: 90%;
+    margin: 20px;
+}
+
+.footer {
+    background-color: #292b2c;
+    height: 200px
+}
+
+.footer p {
+    font-family: 'Merienda One', cursive;
+    font-size: 32px;
+    margin-top: 80px;
+    color: #fff;
+    text-align: center;
+}
+
+/* Pricing Tab */
+
+.panel-browse {
+    margin-top: 90px;
+}
+
+.panel-items a {
+    color: #000;
+}
+
+.panel-items a:hover {
+    color: salmon;
+}
+
+.panel-browse .panel-items p {
+    margin-top: 10px;
+}
+
+.carousel-promo {
+    margin-top: 80px;
+}
+
+.carousel-promo img {
+    height: 370px;
+    border-radius: 10px;
+}
+
+.product {
+    margin-top: 60px;
+}
+
+.pb {
+    z-index: 1;
+}
+
+.shopcart {
+    border-bottom: 2px solid black;
+    margin-bottom: 2px;
+}
+
+.total {
+    float: right;
+}
+
+.item-name {
+    display: block;
+    padding-top: 10px;
+    font-size: 16px;
+}
+
+.cart-menu {
+    width: 340px;
+    z-index: 1;
+}
+
+.shopping-cart-total {
+    float: right;
+    font-weight: bold
+}
+
+/*  Auth Login */
+
+/* End Auth Login */
+
+/* All Device */
+
+.btn-join {
+    text-transform: uppercase;
+    border-radius: 40px;
+}
+
+/* Desktop */
+
+@media (min-width: 992px) {
+    .navbar-brand, .nav-head {
+        color: #fff !important;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+    }
+    .nav-head {
+        text-transform: uppercase;
+        margin-right: 20px;
+    }
+    .nav-head:hover::after {
+        content: '';
+        display: block;
+        border-bottom: 3px solid red;
+        width: 20%;
+        margin: auto;
+        padding-bottom: 5px;
+        margin-bottom: -8px;
+    }
+    .jumbotron {
+        height: 640px;
+        margin-top: -75px;
+        text-align: left;
+    }
+    .jumbotron .display-4 {
+        font-size: 60px;
+        text-align: left;
+    }
+    .content1 {
+        text-align: left;
+    }
+    .content2 {
+        margin-top: 120px;
+    }
+    .content2 h3 {
+        font-size: 24px;
+    }
+    .content3 {
+        margin-top: 90px;
+    }
+    .contact {
+        text-transform: uppercase;
+        text-align: left;
+    }
+    .content4 .carousel-item img {
+        border-radius: 20px;
+        height: 320px;
+    }
+    .content4 .car-quote {
+        text-align: left;
+    }
+    .content4 .car-quote h3 {
+        margin-top: 10px;
+    }
+    .carousel-promo {
+        width: 720px;
+    }
+    .carousel-promo .carousel-item img {
+        width: 100%;
+    }
+    .table-responsive {
+        overflow-x: hidden
+    }
+}
