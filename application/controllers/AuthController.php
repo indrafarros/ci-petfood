@@ -94,7 +94,7 @@ class AuthController extends CI_Controller
             'protocol'  => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_user' => 'indradullanov1@gmail.com',
-            'smtp_pass' => 'emansudirman123',
+            'smtp_pass' => 'Emansudirman123',
             'smtp_port' => 465,
             'mailtype'  => 'html',
             'charset'   => 'utf-8',
@@ -113,10 +113,6 @@ class AuthController extends CI_Controller
         } else if ($type == 'forgot_password') {
             $this->email->subject('Account Verification');
             $this->email->message('Click this link to reset you password account : <a href="' . base_url() . 'auth/reset_password?email=' . $_POST['email'] . '&token=' . urlencode($token) . '">Activate</a>');
-        } else if ($type == 'new_token') {
-
-            // $this->email->subject('Account Verification');
-            // $this->email->message('Click this link to verify you account : <a href="' . base_url() . 'auth/verify?email=' . $_POST['email'] . '&token=' . urlencode($token) . '">Activate</a>');
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
             Something wrong! </div>');
@@ -135,10 +131,6 @@ class AuthController extends CI_Controller
         redirect('auth/login');
     }
 
-    public function loginAPI()
-    {
-    }
-
     public function login()
     {
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
@@ -146,7 +138,7 @@ class AuthController extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $data['title'] = 'Login';
-            $this->load->view('auth/login', $data);
+            $this->load->view('auth/v_login', $data);
         } else {
             $this->_hasLogin();
         }
@@ -193,7 +185,7 @@ class AuthController extends CI_Controller
         $this->_configRules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('auth/register');
+            $this->load->view('auth/v_register');
         } else {
             $data = array(
                 'first_name' => html_escape($_POST['first_name']),
@@ -209,12 +201,19 @@ class AuthController extends CI_Controller
                 'updated_at' => date('Y-m-d H:i:s')
             );
 
+            $token_verification = base64_encode(random_bytes(32));
+            $data_token = array(
+                'email' => $_POST['email'],
+                'token' => $token_verification,
+                'created_at' => date('Y-m-d H:i:s')
+            );
             $insert = $this->auth->registration($data);
-
             if ($insert) {
+                $this->auth->activationToken($data_token);
+                $this->_sendEmail($token_verification, 'verify');
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                 Registration successful, please check your email for verication! </div>');
-                redirect('auth', 'refresh');
+                redirect('auth/login');
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                 Something wrong, please try again! </div>');
@@ -222,55 +221,60 @@ class AuthController extends CI_Controller
             }
         }
     }
-    public function registrationa()
+
+    public function verify()
     {
-        $this->_configRules();
+        $email = $_GET['email'];
+        $token = $_GET['token'];
+        $date_now = new DateTime('+1 day');
+        $date_now->format('Y-m-d H:i:s');
+        $check_verify = $this->auth->checkVerify($email, $token, 'check_email');
+        if ($check_verify) {
+            if ($date_now < $check_verify['created_at']) {
+                $this->auth->checkVerify($email, $token, 'expired');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                    Activation token expired! </div>');
+                redirect('auth/login');
+            } else {
+                $this->auth->verifySuccess($email);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                    Activation success, login now! </div>');
+                redirect('auth/login');
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            Something wrong, please try again! </div>');
+            redirect('auth/login');
+        }
+    }
+
+    public function forgot_password()
+    {
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('auth/register');
+            $data['title'] = 'Forgor Password';
+            $this->load->view('auth/v_forgot_password', $data);
         } else {
-            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', [
-                'is_unique' => 'This email has already registered!'
-            ]);
-            if ($this->form_validation->run() == FALSE) {
-                $this->load->view('auth/register');
-            } else {
-                $data = array(
-                    'first_name' => html_escape($_POST['first_name']),
-                    'last_name' => html_escape($_POST['last_name']),
-                    'email' => $_POST['email'],
-                    'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-                    'picture_path' => 'default.png',
-                    'phone_number' => '',
-                    'address' => '',
-                    'role_id' => 2,
-                    'is_active' => 0,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
-                );
-                $this->form_validation->set_data($data);
-
+            $email = $_POST['email'];
+            $check = $this->auth->getUser($email);
+            if ($check > 0) {
                 $token = base64_encode(random_bytes(32));
-
+                $this->_sendEmail($token, 'verify');
                 $data_token = array(
                     'email' => $_POST['email'],
                     'token' => $token,
-                    'create_at' => time(),
-                    'deleted_at' => ''
+                    'created_at' => date('Y-m-d H:i:s')
                 );
+                $this->auth->activationToken($data_token);
 
-                $insert = $this->auth->registration($data);
-                // $this->auth->create_account_verification($data_token, 'register');
-
-                if ($insert) {
-                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                    Registration successful, please check your email for verication! </div>');
-                    // $this->_sendEmail($token, 'verify');
-                    // redirect('auth');
-                } else {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                    Something wrong, please try again! </div>');
-                }
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                Check your email for code verication! </div>');
+                redirect('auth/login');
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                Something wrong, please try again! </div>');
+                redirect('auth/login');
             }
         }
     }

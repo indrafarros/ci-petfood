@@ -20,11 +20,13 @@
     <div class="register-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+                <a href="../../index2.html" class="h1"><b>Food</b>Shop</a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Register a new account</p>
                 <form action="<?= base_url('auth/registration') ?>" method="post">
+
+                    <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -39,34 +41,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                         <input type="email" class="form-control" name="email" placeholder="Email">
-                        <?= form_error('email', '<small class="text-danger pl-1">', '</small>'); ?>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
+                    <?= form_error('email', '<small class="text-danger pl-1">', '</small>'); ?>
+                    <div class="input-group mt-3">
                         <input type="password" class="form-control" name="password" placeholder="Password">
-                        <?= form_error('password', '<small class="text-danger pl-1">', '</small>'); ?>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
+                    <?= form_error('password', '<small class="text-danger pl-1">', '</small>'); ?>
+                    <div class="input-group mt-3">
                         <input type="password" class="form-control" name="password_confirmation" placeholder="Retype password">
-                        <?= form_error('password_confirmation', '<small class="text-danger pl-1">', '</small>'); ?>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <?= form_error('password_confirmation', '<small class="text-danger pl-1">', '</small>'); ?>
+                    <div class="row mt-3">
                         <div class="col-8">
                             <div class="icheck-primary">
                                 <input type="checkbox" id="accept_terms" name="accept_terms" value="1">
@@ -74,6 +76,7 @@
                                     I agree to the <a href="#">terms</a>
                                 </label>
                             </div>
+                            <?= form_error('accept_terms', '<small class="text-danger pl-1">', '</small>'); ?>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
