@@ -24,7 +24,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Rental Kamera</a>
+            <a class="navbar-brand" href="#">Pet Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -79,7 +79,7 @@
     <div class="jumbotron jb-1 jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">You can’t use up <span>creativity.</span><br> The more you use, <br>the more you have.</h1>
-            <a href="" class="btn btn-danger btn-join">Pricing</a>
+            <a href="" class="btn btn-danger btn-join float-right">Shop Now</a>
         </div>
     </div>
     <!-- End Jumbotroon -->

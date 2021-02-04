@@ -40,7 +40,7 @@ body {
 /* Jumbotroon */
 
 .jb-1 {
-    background-image: url(/cisewa/assets/cover-kamera.jpg);
+    background-image: url(/ignited-petfood/assets/img/content/tes.jpg);
     background-size: cover;
     text-align: center;
     height: 520px;
@@ -48,7 +48,7 @@ body {
 }
 
 .jb-2 {
-    background-image: url(/cisewa/assets/jb-2.jpg);
+    background-image: url(/ignited-petfood/assets/img/content/tes.jpg);
     background-size: cover;
     text-align: center;
     height: 520px;
@@ -357,8 +357,8 @@ body {
         text-align: left;
     }
     .jumbotron .display-4 {
-        font-size: 60px;
-        text-align: left;
+        font-size: 48px;
+        text-align: right;
     }
     .content1 {
         text-align: left;
