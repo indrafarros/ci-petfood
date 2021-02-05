@@ -7,7 +7,6 @@ class AuthController extends CI_Controller
         parent::__construct();
 
         $this->load->model('Auth_model', 'auth');
-
         $this->_url = 'http://localhost/ignited-petfood/authcontroller';
         $this->api_key = '';
         $this->api_user = '';
@@ -157,6 +156,8 @@ class AuthController extends CI_Controller
                     $session = [
                         'is_login' => 'true',
                         'first_name' => $user['first_name'],
+                        'email' => $user['email'],
+                        'photo_image' => $user['picture_path'],
                         'role_id' => $user['role_id']
                     ];
                     $this->session->set_userdata($session);
@@ -324,5 +325,26 @@ class AuthController extends CI_Controller
         } else {
             $this->load->view('auth/v_change_password');
         }
+    }
+
+    public function logout()
+    {
+        $session = [
+            'is_login',
+            'first_name',
+            'photo_image',
+            'role_id',
+            'email'
+        ];
+
+        $this->session->unset_userdata($session);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+           You have been logout!
+          </div>');
+        redirect('auth/login');
+    }
+
+    public function blocked()
+    {
     }
 }
