@@ -10,6 +10,9 @@ class DashboardController extends CI_Controller
         $this->load->model('Menu_model', 'menu');
         $this->load->model('Auth_model', 'auth');
         $this->load->model('Submenu_model', 'submenu');
+        $this->load->model('Roleaccess_model', 'role');
+        $this->load->model('Products_model', 'product');
+        $this->load->model('Category_model', 'category');
     }
 
     public function index()
@@ -265,7 +268,7 @@ class DashboardController extends CI_Controller
                 $id_c = $field->id;
                 $row[] = $no;
                 $row[] = $field->role_access;
-                $row[] = '<a href="' . base_url('admin/dashboard/roletes/' . $id_c . '') . '" class="btn btn-outline-warning btn-sm" id="btnViewRole" value="' . $id_c . '"><i class="fas fa-eye"></i></a>
+                $row[] = '<a href="' . base_url('dashboard/roletes/' . $id_c . '') . '" class="btn btn-outline-warning btn-sm" id="btnViewRole" value="' . $id_c . '"><i class="fas fa-eye"></i></a>
                 <button class="btn btn-outline-info btn-sm" id="btnEditRole" data-id="' . $id_c . '" value="' . $field->role_access . '"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-outline-danger btn-sm" id="btnDeleteRole" value="' . $id_c . '"><i class="fas fa-trash"></i></button>';
                 $data[] = $row;
@@ -283,6 +286,16 @@ class DashboardController extends CI_Controller
         }
     }
 
+    public function myProfile()
+    {
+        $data = [
+            'user_session' => $this->session->userdata(),
+            'menu_title' => user_menu(),
+            'title' => 'My Profile'
+        ];
+        $this->template->load('templates/admin/v_index', 'dashboard/admin/v_profile', $data);
+    }
+
     public function product_category()
     {
         $data = [
@@ -292,5 +305,99 @@ class DashboardController extends CI_Controller
         ];
 
         $this->template->load('templates/admin/v_index', 'dashboard/admin/v_category', $data);
+    }
+
+    public function addCategory()
+    {
+        $data = [
+            'category_name' => $_POST['category_name'],
+            'tags' => $_POST['tags'],
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
+        $this->category->addCategory($data);
+
+        $data = array(
+            'csrfName' => $this->security->get_csrf_token_name(),
+            'csrfHash' => $this->security->get_csrf_hash()
+        );
+        echo json_encode($data);
+    }
+
+    public function deleteCategory()
+    {
+        $id_category = $_POST['id_category'];
+        $this->category->deleteCategory($id_category);
+
+        $data = array(
+            'csrfName' => $this->security->get_csrf_token_name(),
+            'csrfHash' => $this->security->get_csrf_hash()
+        );
+
+        echo json_encode($data);
+    }
+
+    public function getEditCategory()
+    {
+        $id_category = $_POST['id_category'];
+        $data = array(
+            'category' =>  $this->category->getCategory($id_category),
+            'csrfName' => $this->security->get_csrf_token_name(),
+            'csrfHash' => $this->security->get_csrf_hash()
+        );
+
+        echo json_encode($data);
+    }
+
+    public function submitEditCategory()
+    {
+        $data = [
+            'id' => $_POST['id_edit_category'],
+            'category_name' => $_POST['menu_edit_category'],
+            'tags' => $_POST['tags'],
+        ];
+
+        $this->category->submitEdit($data);
+
+        $data = array(
+            'csrfName' => $this->security->get_csrf_token_name(),
+            'csrfHash' => $this->security->get_csrf_hash()
+        );
+
+        echo json_encode($data);
+    }
+
+    public function serverside_get_product_category()
+    {
+        if ($this->input->is_ajax_request() == true) {
+            $list = $this->category->get_datatables();
+            $data = array();
+            $no = $_POST['start'];
+            foreach ($list as $field) {
+                $no++;
+                $row = array();
+                $id_c = $field->id;
+                $row[] = $no;
+                $row[] = $field->category_name;
+                $row[] = $field->tags;
+                $row[] = '<button class="btn btn-outline-info btn-sm" id="btnEditCategory" data-id="' . $id_c . '" value="' . $field->category_name . '"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-outline-danger btn-sm" id="btnDeleteCategory" value="' . $id_c . '"><i class="fas fa-trash"></i></button>';
+                $data[] = $row;
+            }
+            $output = array(
+                "draw" => $_POST['draw'],
+                "recordsTotal" => $this->category->count_all(),
+                "recordsFiltered" => $this->category->count_filtered(),
+                "data" => $data,
+            );
+
+            echo json_encode($output);
+        } else {
+            exit('Maaf data tidak bisa ditampilkan');
+        }
+    }
+
+    public function product()
+    {
     }
 }

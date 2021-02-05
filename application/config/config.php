@@ -457,6 +457,7 @@ $config['csrf_exclude_uris'] = array(
     'dashboard/serverside_get_menu',
     'dashboard/serverside_get_submenu',
     'dashboard/serverside_role_access',
+    'dashboard/serverside_get_product_category',
     'api/usercontroller/[a-z]+'
 );
 

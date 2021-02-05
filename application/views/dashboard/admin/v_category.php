@@ -29,16 +29,16 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#modalAddMenu">
-                        Add new menu
+                    <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#modalAddCategory">
+                        Add category
                     </button>
                     <div class="table-responsive">
                         <table class="table table-hover table-striped" id="menu_table">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Menu</th>
-                                    <!-- <th class="col"></th> -->
+                                    <th scope="col">Category Name</th>
+                                    <th class="col">Tags</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -57,12 +57,12 @@
 </div><!-- /.container-fluid -->
 
 
-<!-- Modal -->
-<div class="modal fade" id="modalAddMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- Modal Add-->
+<div class="modal fade" id="modalAddCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new menu</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add new product category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -70,8 +70,13 @@
             <form method="post" id="formAddMenu">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="menu_name">Menu Name</label>
-                        <input type="text" class="form-control" name="menu_name" id="menu_name" placeholder="Add menu name">
+                        <label for="category_name">Category name</label>
+                        <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Add category name">
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags</label>
+                        <input type="text" class="form-control" name="tags" id="tags" placeholder="Add category name">
+                        <span class="text-sm text-danger font-italic font-weight-bold pl-1">Example : cats, dry, wet</span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -84,11 +89,11 @@
 </div>
 
 <!-- Modal Edit-->
-<div class="modal fade" id="modalEditMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="modalEditCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new menu</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Product Category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -97,10 +102,13 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                        <input type="hidden" name="id_edit_name" id="id_edit_name" value="">
-                        <label for="menu_edit_name">Menu Name</label>
-                        <input type="text" class="form-control" name="menu_edit_name" id="menu_edit_name" placeholder="Add menu name">
-
+                        <input type="hidden" name="id_edit_category" id="id_edit_category" value="">
+                        <label for="menu_edit_category">Category name</label>
+                        <input type="text" class="form-control" name="menu_edit_category" id="menu_edit_category" placeholder="Add category name">
+                    </div>
+                    <div class="form-group">
+                        <label for="menu_edit_tags">Category tags</label>
+                        <input type="text" class="form-control" name="menu_edit_tags" id="menu_edit_tags" placeholder="Add category name">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -126,11 +134,9 @@
             "order": [],
 
             "ajax": {
-                "url": "<?= base_url('dashboard/serverside_get_menu') ?>",
+                "url": "<?= base_url('dashboard/serverside_get_product_category') ?>",
                 "dataType": "json",
                 "type": "POST",
-
-
             },
             "columnDefs": [{
                     "targets": [0],
@@ -143,6 +149,10 @@
                 },
                 {
                     "targets": [2],
+                    "width": "auto"
+                },
+                {
+                    "targets": [3],
                     "width": "200px"
                 }
             ],
@@ -154,8 +164,9 @@
         $("#btnAddMenu").click(function(e) {
             e.preventDefault();
             // alert('test');
-            var menu_name = $('#menu_name').val();
-            if (menu_name == '') {
+            const category_name = $('#category_name').val();
+            const tags = $('#tags').val();
+            if (category_name == '') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -163,20 +174,21 @@
                 });
             } else {
                 $.ajax({
-                    url: "<?= base_url('dashboard/addMenu') ?>",
+                    url: "<?= base_url('dashboard/addCategory') ?>",
                     type: 'post',
                     dataType: 'json',
                     data: {
-                        menu_name: menu_name,
+                        category_name: category_name,
+                        tags: tags,
                         [csrfName]: csrfHash
                     },
                     success: function(data) {
                         csrfName = data.csrfName;
                         csrfHash = data.csrfHash;
-                        $('#modalAddMenu').modal('hide');
+                        $('#modalAddCategory').modal('hide');
                         $('#formAddMenu')[0].reset();
                         Swal.fire(
-                            'Add new menu successfuly!',
+                            'Add new category successfuly!',
                             'success'
                         )
                         data_table();
@@ -187,7 +199,7 @@
 
 
 
-        $(document).on('click', "#btnDeleteMenu", function(e) {
+        $(document).on('click', "#btnDeleteCategory", function(e) {
             e.preventDefault();
             var id = $(this).attr('value');
 
@@ -202,11 +214,11 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '<?= base_url('dashboard/deleteMenu') ?>',
+                        url: '<?= base_url('dashboard/deleteCategory') ?>',
                         type: 'post',
                         dataType: 'json',
                         data: {
-                            id_menu: id,
+                            id_category: id,
                             [csrfName]: csrfHash
                         },
                         success: function(data) {
@@ -223,33 +235,36 @@
                 }
             })
         });
-        // Get menu
-        $(document).on('click', '#btnEditMenu', function(e) {
+        // Get Cateogry info
+        $(document).on('click', '#btnEditCategory', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
             $.ajax({
-                url: '<?= base_url('dashboard/getEditMenu') ?>',
+                url: '<?= base_url('dashboard/getEditCategory') ?>',
                 type: 'post',
                 dataType: 'json',
                 data: {
-                    id_menu: id,
+                    id_category: id,
                     [csrfName]: csrfHash
                 },
                 success: function(data) {
                     csrfName = data.csrfName;
                     csrfHash = data.csrfHash;
-                    $('#modalEditMenu').modal('show');
-                    $('#id_edit_name').val(data.menu.id);
-                    $('#menu_edit_name').val(data.menu.menu);
+                    $('#modalEditCategory').modal('show');
+                    // console.log(data);
+                    $('#id_edit_category').val(data.category.id);
+                    $('#menu_edit_category').val(data.category.category_name);
+                    $('#menu_edit_tags').val(data.category.tags);
                 }
             })
         });
 
         $(document).on('click', '#btnSubmitEdit', function(e) {
             e.preventDefault();
-            var id = $('#id_edit_name').val();
-            var menu_name = $('#menu_edit_name').val();
-            if (id == '' || menu_name == '') {
+            const id = $('#id_edit_category').val();
+            const category_name = $('#menu_edit_category').val();
+            const tags = $('#menu_edit_tags').val();
+            if (id == '' || category_name == '') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -257,19 +272,20 @@
                 });
             } else {
                 $.ajax({
-                    url: '<?= base_url('dashboard/submitEditMenu') ?>',
+                    url: '<?= base_url('dashboard/submitEditCategory') ?>',
                     dataType: 'json',
                     type: 'post',
                     data: {
-                        id_edit_name: id,
-                        menu_edit_name: menu_name,
+                        id_edit_category: id,
+                        menu_edit_category: category_name,
+                        tags: tags,
                         [csrfName]: csrfHash
 
                     },
                     success: function(data) {
                         csrfName = data.csrfName;
                         csrfHash = data.csrfHash;
-                        $('#modalEditMenu').modal('hide');
+                        $('#modalEditCategory').modal('hide');
                         $('#formSubmitMenu')[0].reset();
                         data_table();
                     }
