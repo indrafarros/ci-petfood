@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>Panel | Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -26,6 +26,12 @@
     <!-- <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css"> -->
     <!-- summernote -->
     <!-- <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css"> -->
+
+    <!-- Sweet Alert 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- jQuery -->
+    <script src="<?= base_url('assets/js/jquery/jquery.min.js') ?>"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -80,7 +86,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="<?= base_url('assets/img/photo_profile/default.png') ?>" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         John Pierce
@@ -96,7 +102,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="<?= base_url('assets/img/photo_profile/default.png') ?>" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Nora Silvester
@@ -171,7 +177,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="<?= base_url('dashboard') ?>" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -179,67 +185,101 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-header">DATA MASTER</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-plus-square"></i>
-                                <p>
-                                    Extras
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Login & Register v1
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
+
+                        <!-- LOOPING MENU -->
+                        <?php foreach ($menu_title as $menu) : ?>
+                            <li class="nav-header"> <?= strtoupper($menu['menu']); ?></li>
+
+                            <!-- SIAPKAN SUB-MENU SESUAI MENU -->
+                            <?php
+                            $menuId = $menu['id'];
+                            $querySubMenu = "SELECT *
+                               FROM `user_sub_menu` JOIN `user_menu` 
+                                 ON `user_sub_menu`.`menu_id` = `user_menu`.`id`
+                              WHERE `user_sub_menu`.`menu_id` = $menuId
+                                AND `user_sub_menu`.`is_active` = 1
+                        ";
+                            $subMenu = $this->db->query($querySubMenu)->result_array();
+                            ?>
+
+                            <?php foreach ($subMenu as $sm) : ?>
+                                <?php if ($title == $sm['menu_title']) : ?>
+                                    <li class="nav-item active">
+                                    <?php else : ?>
+                                    <li class="nav-item">
+                                    <?php endif; ?>
+                                    <a class="nav-link" href="<?= base_url($sm['link_url']); ?>">
+                                        <i class="nav-icon <?= $sm['icon_sub']; ?>"></i>
+                                        <p><?= $sm['menu_title']; ?></p>
                                     </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="pages/examples/login.html" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Login v1</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="pages/examples/register.html" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Register v1</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="pages/examples/forgot-password.html" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Forgot Password v1</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="pages/examples/recover-password.html" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Recover Password v1</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                    </li>
+                                <?php endforeach; ?>
+
+                                <!-- <hr class="sidebar-divider mt-3"> -->
+
+                            <?php endforeach; ?>
+
+                            <li class="nav-header">DATA MASTER</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon far fa-plus-square"></i>
+                                    <p>
+                                        Extras
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Login & Register v1
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="pages/examples/login.html" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Login v1</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="pages/examples/register.html" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Register v1</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="pages/examples/forgot-password.html" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Forgot Password v1</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="pages/examples/recover-password.html" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Recover Password v1</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
 
 
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>Documentation</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('auth/logout') ?>" class="nav-link">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>Logout</p>
-                            </a>
-                        </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://adminlte.io/docs/3.1/" class="nav-link">
+                                    <i class="nav-icon fas fa-file"></i>
+                                    <p>Documentation</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= base_url('auth/logout') ?>" class="nav-link">
+                                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                                    <p>Logout</p>
+                                </a>
+                            </li>
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -275,8 +315,6 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- jQuery -->
-    <script src="<?= base_url('assets/js/jquery/jquery.min.js') ?>"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

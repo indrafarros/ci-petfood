@@ -155,6 +155,7 @@ class AuthController extends CI_Controller
                 if (password_verify($password, $user['password'])) {
                     $session = [
                         'is_login' => 'true',
+                        'id_user' => $user['id'],
                         'first_name' => $user['first_name'],
                         'email' => $user['email'],
                         'photo_image' => $user['picture_path'],
@@ -334,7 +335,8 @@ class AuthController extends CI_Controller
             'first_name',
             'photo_image',
             'role_id',
-            'email'
+            'email',
+            'id_user'
         ];
 
         $this->session->unset_userdata($session);

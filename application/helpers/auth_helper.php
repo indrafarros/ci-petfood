@@ -6,40 +6,41 @@ function is_login()
 {
     $CI = get_instance();
 
-    $roles = $CI->session->userdata('roles');
+    $roles = $CI->session->userdata('role_id');
 
     if (!$CI->session->userdata('is_login')) {
         redirect('auth/login');
+    } else {
+        $menu = 'admin';
+
+        $queryMenu = $CI->db->get_where('user_menu', ['menu' => $menu])->row_array();
+        $menu_id = $queryMenu['id'];
+
+        $userAccess = $CI->db->get_where('user_group_menu', [
+            'roles_id' => $roles,
+            'menu_id' => $menu_id
+        ]);
     }
-    // else {
-    //     $menu = $CI->uri->segment(1);
 
-    //     $queryMenu = $CI->db->get_where('user_menu', ['menu' => $menu])->row_array();
-    //     $menu_id = $queryMenu['id'];
-
-    //     $userAccess = $CI->db->get_where('user_group_menu', [
-    //         'roles_id' => $roles,
-    //         'menu_id' => $menu_id
-    //     ]);
-    // }
-
-    // if ($userAccess->num_rows() < 1) {
-    //     redirect('auth/blocked');
-    // }
+    if ($userAccess->num_rows() < 1) {
+        var_dump($menu);
+        die();
+        redirect('auth/blocked');
+    }
 }
 
-// function check_access($role_id, $menu_id)
-// {
-//     $ci = get_instance();
+function check_access($role_id, $menu_id)
+{
+    $ci = get_instance();
 
-//     $ci->db->where('roles_id', $role_id);
-//     $ci->db->where('menu_id', $menu_id);
-//     $result = $ci->db->get('user_group_menu');
+    $ci->db->where('roles_id', $role_id);
+    $ci->db->where('menu_id', $menu_id);
+    $result = $ci->db->get('user_group_menu');
 
-//     if ($result->num_rows() > 0) {
-//         return "checked='checked'";
-//     }
-// }
+    if ($result->num_rows() > 0) {
+        return "checked='checked'";
+    }
+}
 
 function is_not_login()
 {

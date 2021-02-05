@@ -59,3 +59,4 @@ $route['auth'] = 'authcontroller';
 $route['auth/(:any)'] = 'authcontroller/$1';
 
 $route['dashboard'] = 'dashboardcontroller';
+$route['dashboard/(:any)'] = 'dashboardcontroller/$1';

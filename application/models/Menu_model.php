@@ -2,8 +2,6 @@
 
 class Menu_model extends CI_Model
 {
-
-
     public $table = 'user_menu'; //nama tabel dari database
     public $column_order = array('id', 'menu'); //Sesuaikan dengan field
     public $column_search = array('menu'); //field yang diizin untuk pencarian 
@@ -16,16 +14,12 @@ class Menu_model extends CI_Model
 
     private function _get_datatables_query()
     {
-
         $this->db->from($this->table);
-
         $i = 0;
-
         foreach ($this->column_search as $item) // looping awal
         {
             if ($_POST['search']['value']) // jika datatable mengirimkan pencarian dengan metode POST
             {
-
                 if ($i === 0) // looping awal
                 {
                     $this->db->group_start();
@@ -86,5 +80,41 @@ class Menu_model extends CI_Model
         $menu_title = $this->db->query($sql)->result_array();
 
         return $menu_title;
+    }
+
+    public function addMenu($data)
+    {
+        return $this->db->insert('user_menu', $data);
+    }
+
+    public function deleteMenu($id_menu)
+    {
+        return $this->db->delete('user_menu', array('id' => $id_menu));
+    }
+
+    public function getDataById($id_menu)
+    {
+        return $this->db->get_where('user_menu', ['id' => $id_menu])->row_array();
+    }
+
+    public function submitEdit($data)
+    {
+        $id = $data['id'];
+        $menu = $data['menu'];
+        $this->db->set('menu', $menu);
+        $this->db->where('id', $id);
+        return $this->db->update('user_menu');
+    }
+
+    public function get_sub_menu($id_menu)
+    {
+        $querySubMenu = "SELECT *
+               FROM `user_sub_menu` JOIN `user_menu` 
+                 ON `user_sub_menu`.`menu_id` = `user_menu`.`id`
+              WHERE `user_sub_menu`.`menu_id` = $id_menu
+                AND `user_sub_menu`.`is_active` = 1
+        ";
+        $subMenu = $this->db->query($querySubMenu)->result_array();
+        return $subMenu;
     }
 }

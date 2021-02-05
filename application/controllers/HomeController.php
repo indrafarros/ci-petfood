@@ -10,6 +10,7 @@ class HomeController extends CI_Controller
 
     public function index()
     {
-        $this->load->view('v_home');
+        $data['title'] = 'Pet Food';
+        $this->load->view('v_home', $data);
     }
 }
