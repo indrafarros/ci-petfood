@@ -37,31 +37,6 @@
             padding: 5px;
         }
 
-        .carousel-cell {
-
-            width: 100%;
-            /* height: 200px; */
-            margin-right: 50px;
-            background: #8C8;
-            border-radius: 10px;
-            counter-increment: gallery-cell;
-            color: white;
-        }
-
-        /* cell number */
-        .carousel-cell:before {
-            display: block;
-            text-align: center;
-            content: counter(gallery-cell);
-            line-height: 300px;
-            font-size: 80px;
-
-        }
-
-        .flickity-button {
-            background: transparent;
-        }
-
         .car-panel {
             background-color: #fff;
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -69,23 +44,6 @@
             /* margin-top: -205px; */
             background-image: linear-gradient(to bottom, rgb(22, 92, 157), rgba(0, 0, 0, 0.1));
             padding: 25px;
-        }
-
-
-        .flickity-page-dots {
-            bottom: -22px;
-        }
-
-        /* dots are lines */
-        .flickity-page-dots .dot {
-            height: 4px;
-            width: 40px;
-            margin: 0;
-            border-radius: 0;
-        }
-
-        .flickity-button {
-            background: transparent;
         }
     </style>
 </head>
@@ -111,7 +69,7 @@
                         <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blog</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -145,46 +103,6 @@
     </nav>
     <!-- End Navbar -->
 
-    <!--end shopping-cart -->
-    <!-- 
-    </div> -->
-    <!--end container -->
-    <!-- Jumbotron -->
-    <div class="carosh">
-        <div style=" width:100% !important">
-            <div class="col-12 car-panel">
-                <div class="carousel" data-flickity='{"fade": true, "wrapAround": true, "autoPlay": 4500}'>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Jumbotroon -->
-
-    <!-- <section class="row justify-content-center" style="width: 100%!important">
-        <div style="margin-left: 30px; width:100% !important">
-            <div class="col-12 car-panel">
-                <div class="carousel" data-flickity='{"fade": true, "wrapAround": true, "autoPlay": 4500}'>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- <section class="row justify-content-center">
-        <div style="width:90% !important">
-            <div class="col-12 card shadow-sm" style="margin-top: -205px;">
-                <div class="carousel p-4" data-flickity='{"fade": true, "wrapAround": true, "autoPlay": 4500}'>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                </div>
-            </div>
-        </div>
-    </section> -->
 
     <!-- Card Info -->
     <div class="container">

@@ -210,11 +210,38 @@
                                 <!-- <h5 style="display:inline-block; color:rgb(22, 92, 157);  font-weight: bold;">Rp <?= number_format($product['price'], 0, ',', '.') ?></h5> -->
                             </div>
                         </div>
+                        <hr>
+                        <span class="font-weight-bold">Tujuan</span>
                         <div class="row">
-                            <div class="col-md-12">
-                                <label for="address" class="mt-2">Address</label>
+                            <div class="col-md-6 mt-3">
+                                <label for="">Provinsi</label>
+                                <select name="province" id="province" class="form-control">
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="">Kota</label>
+                                <select name="city" id="city" class="form-control">
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="">Expedisi</label>
+                                <select name="expedition" id="expedition" class="form-control">
+
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mt-3">
+                                <label for="">Expedisi</label>
+                                <select name="cost" id="cost" class="form-control">
+
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label for="address">Address</label>
                                 <textarea name="address" class="form-control" required id="address" cols="30" rows="2"></textarea>
-                                <label for="note" class="mt-2">Note</label>
+                                <label for="note">Note</label>
                                 <textarea class="form-control" id="note" name="note" required cols="30" rows="2"></textarea>
                             </div>
 
@@ -358,10 +385,10 @@
             $('#total_barang').html('');
             $('#harga_barang').html('');
             $('#total_harga').html('');
-            $('#ongkos_kirim').html('');
+            // $('#ongkos_kirim').html('');
             $('#price').val(total);
             $('#total_barang').append('<p id="total_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">' + qty + '</p>');
-            $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 10,000</p>');
+            $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
             $('#harga_barang').append('<p id="harga_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(price) + '</p>');
             $('#total_harga').append('<p id="total_harga_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(total) + '</p>');
 
@@ -382,12 +409,6 @@
             $("html, body").animate({
                 scrollTop: 0
             }, 500);
-        });
-
-
-        $('.trash').on('click', function(e) {
-            var id = $(this).data('id');
-            alert(id)
         });
     </script>
     </script>
@@ -416,7 +437,6 @@
             b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0), "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1), jQuery(this).is(".plus") ? c && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
             subtotal();
         });
-
         $(document).ready(function() {
             $('#submit-form').click(function(e) {
                 e.preventDefault();
@@ -440,6 +460,77 @@
                 });
             });
         })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '<?= base_url('API_RajaOngkir/getProvince') ?>',
+                type: 'post',
+                success: function(res) {
+                    // console.log(res)
+                    $("select[name=province]").html(res);
+                }
+            });
+
+            $("select[name=province]").on("change", function(e) {
+                e.preventDefault();
+                var province_id = $("option:selected", this).attr('province_id');
+
+                $.ajax({
+                    url: '<?= base_url('API_RajaOngkir/getCity') ?>',
+                    type: 'post',
+                    data: 'province_id=' + province_id,
+                    success: function(res) {
+                        // console.log(res);
+                        $("select[name=city]").html(res);
+                        $("select[name=cost]").html("<option>Pilih Kota</option>");
+                    }
+                });
+            });
+
+            $("select[name=city]").on("change", function(e) {
+                e.preventDefault();
+                $('#ongkos_kirim').html('');
+                $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
+                $.ajax({
+                    url: '<?= base_url('API_RajaOngkir/getExpedition') ?>',
+                    type: 'post',
+
+                    success: function(res) {
+                        console.log(res);
+                        $("select[name=expedition]").html(res);
+                        $("select[name=cost]").html("<option> Pilih</option>");
+
+                    }
+                })
+            })
+
+            $("select[name=expedition]").on("change", function(e) {
+                e.preventDefault();
+                $('#ongkos_kirim').html('');
+                var id_expedition = $("select[name=expedition]").val();
+                var id_city = $("option:selected", "select[name=city]").attr('city_id');
+                $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
+                // alert(id_city);
+                $.ajax({
+                    url: '<?= base_url('API_RajaOngkir/getCost') ?>',
+                    type: 'post',
+                    data: 'id_expedition=' + id_expedition + '&id_city=' + id_city,
+                    success: function(res) {
+                        $("select[name=cost]").html(res);
+                        console.log(res);
+                    }
+                });
+            });
+
+            $("select[name=cost]").on("change", function(e) {
+                var numFormat = new Intl.NumberFormat("en-ID");
+                var data_value = $("option:selected", this).attr('data_value');
+                $('#ongkos_kirim').html('');
+                $('#ongkos_kirim').append('<p id="harga_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(data_value) + '</p>');
+                // alert(data_value);
+            })
+        });
     </script>
 </body>
 

@@ -37,6 +37,13 @@
             counter-increment: gallery-cell;
         }
 
+        .navbar {
+            /* background-color: rgb(22, 92, 157) !important; */
+            position: sticky;
+            top: 0;
+            z-index: 1020
+        }
+
         /* cell number */
         .carousel-cell:before {
             display: block;
@@ -76,13 +83,27 @@
             box-shadow: 0 15px 24px rgba(0, 0, 0, 0.11),
                 0 15px 24px var(--box-shadow-color);
         }
+
+        .navbar-fixed-top.scrolled {
+            background-color: rgb(22, 92, 157) !important;
+            transition: background-color 200ms linear;
+        }
     </style>
+
+    <script>
+        $(function() {
+            $(document).scroll(function() {
+                var $nav = $(".navbar-fixed-top");
+                $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+            });
+        });
+    </script>
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Pet Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

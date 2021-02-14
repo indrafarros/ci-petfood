@@ -459,7 +459,8 @@ $config['csrf_exclude_uris'] = array(
     'dashboard/serverside_role_access',
     'dashboard/serverside_get_product_category',
     'dashboard/serverside_get_product',
-    'api/usercontroller/[a-z]+'
+    'api/usercontroller/[a-z]+',
+    'API_RajaOngkir/[a-z]+'
 );
 
 /*
