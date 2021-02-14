@@ -399,5 +399,171 @@ class DashboardController extends CI_Controller
 
     public function product()
     {
+        $data = [
+            'title' => 'Products',
+            'user_session' => $this->session->userdata(),
+            'menu_title' => user_menu()
+        ];
+        $this->template->load('templates/admin/v_index', 'dashboard/admin/v_products', $data);
+    }
+
+    public function add_product()
+    {
+        $data = [
+            'title' => 'Add New Product',
+            'user_session' => $this->session->userdata(),
+            'menu_title' => user_menu()
+        ];
+
+        $this->template->load('templates/admin/v_index', 'dashboard/admin/v_add_product', $data);
+    }
+
+
+
+    public function new_product()
+    {
+
+        $this->load->library('upload');
+        $files = $_FILES;
+        $images = array();
+        $cpt = count($_FILES['files']['name']);
+        for ($i = 0; $i < $cpt; $i++) {
+            $_FILES['images']['name'] = $files['files']['name'][$i];
+            $_FILES['images']['type'] = $files['files']['type'][$i];
+            $_FILES['images']['tmp_name'] = $files['files']['tmp_name'][$i];
+            $_FILES['images']['error'] = $files['files']['error'][$i];
+            $_FILES['images']['size'] = $files['files']['size'][$i];
+
+            $config = array(
+                'file_name' => time() . uniqid(),
+                'upload_path' => './uploads',
+                'allowed_types' => 'gif|jpg|png',
+                'max_size' => 3000,
+                'overwrite' => FALSE
+            );
+
+            $this->upload->initialize($config);
+            $this->upload->do_upload('images');
+
+            $data_name = $this->upload->data();
+            $filename_arr[] = $data_name['file_name'];
+        }
+        // var_dump($filename_arr);
+        // die();
+        $fileName = implode(',', $filename_arr);
+        $data = array(
+            'brand' => $_POST['brand'],
+            'product_name' => $_POST['product_name'],
+            'price' => $_POST['price'],
+            'description' => $_POST['description'],
+            'category_id' => '2',
+            'picture_path' => $fileName,
+            'created_at' => date('Y-m-d H:i:s'),
+            'slug' => url_title($_POST['product_name'], 'dash', true)
+        );
+
+        $store = $this->product->addProduct($data);
+        if ($store) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Success add new product to database! </div>');
+            redirect('dashboard/add_product');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            Something wrong! </div>');
+            redirect('dashboard/new_product');
+        }
+    }
+
+    public function deleteProduct()
+    {
+        $id = $_POST['id_product'];
+
+        $this->product->deleteProduct($id);
+
+        $data = array(
+            'csrfName' => $this->security->get_csrf_token_name(),
+            'csrfHash' => $this->security->get_csrf_hash()
+        );
+
+        echo json_encode($data);
+    }
+
+    public function editProduct()
+    {
+
+        $id = $_GET['id'];
+
+        $data = [
+            'title' => 'Edit Product',
+            'user_session' => $this->session->userdata(),
+            'menu_title' => user_menu(),
+            'product' => $this->product->getProduct($id)
+        ];
+
+        $this->template->load('templates/admin/v_index', 'dashboard/admin/v_edit_product', $data);
+    }
+
+    public function submitProduct()
+    {
+
+        $data = array(
+            'id' => $_POST['id_product'],
+            'brand' => $_POST['brand'],
+            'product_name' => $_POST['product_name'],
+            'price' => $_POST['price'],
+            'description' => $_POST['description'],
+            'category_id' => '2',
+            'created_at' => date('Y-m-d H:i:s'),
+            'slug' => url_title($_POST['product_name'], 'dash', true)
+        );
+
+        $this->product->submitProduct($data);
+
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                Success! </div>');
+        redirect('dashboard/product');
+    }
+
+    public function serverside_get_product()
+    {
+        if ($this->input->is_ajax_request() == true) {
+            $list = $this->product->get_datatables();
+            $data = array();
+            $no = $_POST['start'];
+            foreach ($list as $field) {
+                $images = explode(',', $field->picture_path);
+                // foreach ($images as $img) {
+                //     $row[] = ' <img src="' . base_url('uploads/' . $img) . '" width="15" height="20" />';
+                // }
+                $no++;
+                $row = array();
+                $id_c = $field->id;
+                $row[] = $no;
+                $row[] = '<button class="btn btn-outline-warning" value="' . $id_c . '"><i class="fas fa-eye"></i></button>';
+                $row[] = $field->brand;
+                $row[] = $field->product_name;
+                $row[] = $field->description;
+                $row[] = $field->category_id;
+                $row[] = 'Rp. ' . $field->price;
+                $row[] = $field->created_at;
+                $row[] = '<a href="' . base_url('dashboard/editproduct?id=' . $id_c) . '" class="btn btn-outline-info btn-sm" id="" data-id="' . $id_c . '" value="' . $field->product_name . '"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-outline-danger btn-sm" id="btnDeleteProduct" value="' . $id_c . '"><i class="fas fa-trash"></i></button>';
+                $data[] = $row;
+            }
+            $output = array(
+                "draw" => $_POST['draw'],
+                "recordsTotal" => $this->product->count_all(),
+                "recordsFiltered" => $this->product->count_filtered(),
+                "data" => $data,
+            );
+
+            echo json_encode($output);
+        } else {
+            exit('Maaf data tidak bisa ditampilkan');
+        }
+    }
+
+    public function transaction()
+    {
     }
 }

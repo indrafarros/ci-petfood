@@ -60,3 +60,15 @@ $route['auth/(:any)'] = 'authcontroller/$1';
 
 $route['dashboard'] = 'dashboardcontroller';
 $route['dashboard/(:any)'] = 'dashboardcontroller/$1';
+
+
+$route['home'] = 'homecontroller';
+$route['home/(:any)'] = 'homecontroller/$1';
+$route['product'] = 'homecontroller/product';
+$route['myorder'] = 'homecontroller/myorder';
+// $route['products'] = 'homecontroller/products';
+
+$route['product/(:any)'] = 'homecontroller/products/$1';
+
+
+$route['blog'] = 'blogcontroller';

@@ -1,3 +1,9 @@
+<?php
+// $tmp = explode(',', $product['picture_path']);
+// $file_extension = end($tmp);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,19 +28,13 @@
     <title><?= $title ?></title>
 
     <style>
-        .product-img {
-            width: 12%;
-            padding: 5px;
-        }
-
         .carousel-cell {
-            width: 100%;
+            width: 66%;
             /* height: 200px; */
-            margin-right: 50px;
+            margin-right: 10px;
             background: #8C8;
-            border-radius: 10px;
+            border-radius: 5px;
             counter-increment: gallery-cell;
-            color: white;
         }
 
         /* cell number */
@@ -42,36 +42,39 @@
             display: block;
             text-align: center;
             content: counter(gallery-cell);
-            line-height: 300px;
+            line-height: 200px;
             font-size: 80px;
+            color: white;
         }
 
         .flickity-button {
             background: transparent;
         }
 
-        .car-panel {
-            background-color: #fff;
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            margin-top: -205px;
-            padding: 3px;
+        .card {
+            background: #fff;
+            border-top-right-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease-out;
+            text-decoration: none;
         }
 
-        .flickity-page-dots {
-            bottom: -22px;
+        .card:hover {
+            transform: translateY(-5px) scale(1.005) translateZ(0);
+            box-shadow: 0 24px 36px rgba(0, 0, 0, 0.11),
+                0 24px 46px var(--box-shadow-color);
         }
 
-        /* dots are lines */
-        .flickity-page-dots .dot {
-            height: 4px;
-            width: 40px;
-            margin: 0;
-            border-radius: 0;
-        }
-
-        .flickity-button {
-            background: transparent;
+        .card:active {
+            transform: scale(1) translateZ(0);
+            box-shadow: 0 15px 24px rgba(0, 0, 0, 0.11),
+                0 15px 24px var(--box-shadow-color);
         }
     </style>
 </head>
@@ -79,7 +82,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light ">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">Pet Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +100,7 @@
                         <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Blogs</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -106,13 +109,13 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-danger btn-join dropdown-toggle 12" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="<?= base_url('auth'); ?>"><?= $this->session->userdata('first_name') ?></a>
                             <div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="<?= base_url('auth') ?>">My Order</a>
+                                <a class="dropdown-item" href="<?= base_url('myorder') ?>">My Order</a>
                                 <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>">Logout</a>
                             </div>
                         </li>
                     </ul>
                     <div class="cart-item">
-                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('home/mycart') ?>">
+                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('pembayaran') ?>">
                             <i class="fas fa-shopping-cart"></i> Cart
                             <span class="badge badge-warning" id="cart_shop"><?= $mycart ?></span>
                         </a>
@@ -136,125 +139,156 @@
     </div> -->
     <!--end container -->
     <!-- Jumbotron -->
-    <div class="jumbotron jb-1 jumbotron-fluid">
+    <div class="jb-2">
         <div class="container">
-            <h1 class="display-4">Give your pet a delicious and <br>nutritious food.</h1>
-            <a href="<?= base_url('product') ?>" class="btn btn-danger btn-join float-right">Shop Now</a>
+
         </div>
     </div>
     <!-- End Jumbotroon -->
 
-    <section class="row justify-content-center" style="width: 100%!important">
-        <div style="margin-left: 30px; width:100% !important">
-            <div class="col-12 car-panel">
-                <div class="carousel" data-flickity='{"fade": true, "wrapAround": true, "autoPlay": 4500}'>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- <section class="row justify-content-center">
-        <div style="width:90% !important">
-            <div class="col-12 card shadow-sm" style="margin-top: -205px;">
-                <div class="carousel p-4" data-flickity='{"fade": true, "wrapAround": true, "autoPlay": 4500}'>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
     <!-- Card Info -->
     <div class="container">
         <div class="backTop"><i class="fas fa-arrow-up"></i></div>
-
         <!-- Panel -->
-        <!-- <div class="row justify-content-center">
-            <div class="col-12 panel-card" style="margin-top: -200px!important">
+        <div class="row justify-content-center">
+            <div class="col-12 panel-card">
                 <div class="carousel" data-flickity='{"contain": true, "fade": true, "autoPlay": 4500, "wrapAround": true}'>
                     <div class="carousel-cell"></div>
                     <div class="carousel-cell"></div>
                     <div class="carousel-cell"></div>
+
                 </div>
-            </div>
-        </div> -->
-
-        <!-- End Panel -->
-
-        <!-- Content -->
-        <div class="row content1 shadow-sm">
-            <div class="col-lg-6">
-                <h2>Give your buddy best <span>food</span></h2>
-                <p style="font-size: 22px; font-weight: 400;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ipsam debitis illo accusamus sit ipsa fugiat expedita ea saepe nemo earum sequi libero illum omnis enim rerum reiciendis, eveniet aspernatur.</p>
-            </div>
-            <div class="col-lg-6 text-center">
-                <img src="<?= base_url('assets/img/content/petdog.jpg') ?>" alt="Content1" class="img-fluid">
             </div>
         </div>
 
+        <!-- End Panel -->
+
+        <!-- carousel -->
+
         <section class="row content1">
-            <div class="col-lg-12 text-center">
-                <p class="text-center" style="font-weight: 900; font-size: 34px; color:#EA2D1D">Provide nutrition for health. Enrich his life </p>
-                <p class="text-center" style="font-weight: 400; font-size: 22px; ">Get the nutritional and health advice you will need to help your cat thrive at every stage of its life. Explore the various articles, information and guides below! </p>
-                <a href="" class="btn btn-secondary btn-lg" style="border-radius: 50px">See more </a>
-            </div>
-        </section>
-        <!-- End Content 1-->
+            <?php foreach ($product as $pd) :
+                $tmp = explode(',', $pd['picture_path']);
+                $file_extension = end($tmp);
+            ?>
+                <div class="col-md-3 col-6 mt-3">
 
-        <!-- Content  -->
-        <section class="row content1 shadow-sm">
-            <div class="col-lg-6 text-center">
-                <img src="<?= base_url('assets/img/content/cat-birman.jfif') ?>" style="height: 300px" alt="Content1" class="img-fluid">
-            </div>
-            <div class="col-lg-6">
-                <h2>Healthy start in<span> life</span></h2>
-                <p style="font-size: 22px; font-weight: 400;">Kitten childhood is full of profound changes in physique and behavior, and it has to deal with a difficult learning curve for new owners. Find out how you can give your kitten the best start in life so that they develop into strong, healthy cats. </p>
-            </div>
-        </section>
-        <!-- End Content  -->
+                    <a href="<?= base_url('product/') . $pd['slug']  ?>" style="text-decoration:none">
+                        <div class="card h-100">
+                            <img src="<?= base_url('uploads/') . $file_extension ?>" class="card-img-top mb-1 mt-1 p-2" style="object-fit: cover; max-height: 160px; width: 180px; border-radius: 10px">
+                            <div class="card-body">
+                                <div class="justify-content-between mb-0 px-3" style=" height: 40%"> <small class="text-muted mt-1"><b><?= $pd['product_name'] ?> </b></small>
+                                </div>
+                                <hr class="mt-2">
+                                <div class="px-3 pb-4">
+                                    <h5 style="display:inline-block; color:rgb(22, 92, 157);  font-weight: bold;">Rp <?= number_format($pd['price'], 0, ',', '.') ?></h5>
+                                    <!-- <div class="d-flex flex-column"><span class="text-muted">Fuel Efficiency</span><small class="text-muted">L/100KM&ast;</small></div> -->
+                                </div>
 
-
-        <section class="row content1 shadow-sm">
-            <div class="col-lg-12 text-center">
-                <p class="text-center" style="font-weight: 900; font-size: 28px">Product Brand </p>
-                <img src="<?= base_url('assets/img/brand/royal-canin.png') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/american-journey.png') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/Tile-Orijen.jpg') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/Tile-Acana-4-updated.jpg') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/Nulo-1x.jpg') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/kong.png') ?>" alt="" class="product-img">
-            </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach ?>
         </section>
 
-        <section class="row content1 shadow-sm">
+
+
+        <section class="row content1">
+
+            <?php foreach ($product as $pd) :
+                $tmp = explode(',', $pd['picture_path']);
+                $file_extension = end($tmp);
+            ?>
+                <div class="col-md-3 col-6 mt-3">
+                    <a href="<?= base_url('product/') . $pd['slug']  ?>" style="text-decoration:none">
+                        <div class="card h-100">
+                            <img src="<?= base_url('uploads/') . $file_extension ?>" class="card-img-top mb-1 mt-1 p-2" style="object-fit: cover; max-height: 160px; width: 180px; border-radius: 10px">
+                            <div class="card-body">
+                                <div class="justify-content-between mb-0 px-3" style=" height: 40%"> <small class="text-muted mt-1"><b><?= $pd['product_name'] ?> </b></small>
+                                </div>
+                                <hr class="mt-2">
+                                <div class="px-3 pb-4">
+                                    <h5 style="display:inline-block; color:rgb(22, 92, 157);  font-weight: bold;">Rp <?= number_format($pd['price'], 0, ',', '.') ?></h5>
+                                    <!-- <div class="d-flex flex-column"><span class="text-muted">Fuel Efficiency</span><small class="text-muted">L/100KM&ast;</small></div> -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach ?>
+        </section>
+
+        <!-- <section class="row content1">
             <div class="col-lg-12 text-center mb-3">
                 <p class="text-center" style="font-weight: 900; font-size: 40px">Type of Food </p>
             </div>
             <div class="col-lg-6 text-center">
-                <h2 class="text-center"><span>Dry</span></h2>
                 <img src="<?= base_url('uploads/16128758696022885d8dafc.jpg') ?>" class="img-fluid" width="30%" alt="">
-                <p style="font-size: 16px; font-weight: 400;">The best camera for you will vary based on whether or not you'll use the camera daily, monthly, or only a couple of times annually. The more you use the camera, the more it makes sense to invest hundreds of dollars in it</p>
+                <h2 class="text-center"><span>Dry</span></h2>
+                <p>The best camera for you will vary based on whether or not you'll use the camera daily, monthly, or only a couple of times annually. The more you use the camera, the more it makes sense to invest hundreds of dollars in it</p>
                 <a href="" class="btn btn-danger">See more</a>
             </div>
             <div class="col-lg-6 text-center">
-                <h2 class="text-center"><span>Wet</span></h2>
                 <img src="<?= base_url('uploads/16128758696022885d8dafc.jpg') ?>" class="img-fluid" width="30%" alt="">
-                <p style="font-size: 16px; font-weight: 400;">The best camera for you will vary based on whether or not you'll use the camera daily, monthly, or only a couple of times annually. The more you use the camera, the more it makes sense to invest hundreds of dollars in it</p>
+                <h2 class="text-center"><span>Wet</span></h2>
+                <p>The best camera for you will vary based on whether or not you'll use the camera daily, monthly, or only a couple of times annually. The more you use the camera, the more it makes sense to invest hundreds of dollars in it</p>
                 <a href="" class="btn btn-danger">See more</a>
             </div>
+        </section> -->
+
+        <section class="content3">
+
         </section>
 
-        <!-- Content 3 -->
-        <!-- <section class="content3">
-
+        <!-- Content 2 -->
+        <!-- <section class="content2">
+            <div class="row text-center title">
+                <div class="col-12">
+                    <h3>Why rent a camera through us ?</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row text-center quote">
+                                <div class="col-lg-3">
+                                    <i class="fas fa-cash-register fa-4x"></i>
+                                    <h4>Easy Payment</h4>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
+                                </div>
+                                <div class="col-lg-3">
+                                    <i class="fas fa-money-bill-alt fa-4x"></i>
+                                    <h4>Lowest Price</h4>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
+                                </div>
+                                <div class="col-lg-3">
+                                    <i class="fas fa-camera fa-4x"></i>
+                                    <h4>Lots Of Choices</h4>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
+                                </div>
+                                <div class="col-lg-3">
+                                    <i class="fas fa-comment-dots fa-4x"></i>
+                                    <h4>24 Hour Support</h4>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section> -->
+        <!-- End Content 2 -->
+
+        <!-- Content 3 -->
+
         <!-- End Content 3 -->
 
         <!-- Content 4 -->
+        <section class="content4">
 
+        </section>
         <!-- End Content 4 -->
 
     </div>
@@ -307,9 +341,10 @@
     <!-- Toastr JS -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-
+    <!-- Datatables -->
+    <!-- <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script> -->
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-
 
     <script>
         var $backToTop = $(".backTop");

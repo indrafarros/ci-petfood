@@ -87,17 +87,17 @@
                 </form>
 
                 <div class="social-auth-links text-center">
-                    <a href="#" class="btn btn-block btn-primary">
+                    <!-- <a href="#" class="btn btn-block btn-primary">
                         <i class="fab fa-facebook mr-2"></i>
                         Sign up using Facebook
-                    </a>
+                    </a> -->
                     <a href="#" class="btn btn-block btn-danger">
                         <i class="fab fa-google-plus mr-2"></i>
                         Sign up using Google+
                     </a>
                 </div>
 
-                <a href="login.html" class="text-center">I already have a membership</a>
+                <a href="<?= base_url('auth/login') ?>" class="text-center">I already have a account</a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->

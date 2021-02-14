@@ -2,8 +2,6 @@
 
 class Category_model extends CI_Model
 {
-
-
     public $table = 'product_category'; //nama tabel dari database
     public $column_order = array('id', 'category_name', 'tags', 'created_at'); //Sesuaikan dengan field
     public $column_search = array('category_name', 'tags'); //field yang diizin untuk pencarian 

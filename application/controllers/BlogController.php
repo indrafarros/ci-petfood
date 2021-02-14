@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends CI_Controller
+class BlogController extends CI_Controller
 {
 
     public function __construct()
@@ -9,10 +9,6 @@ class UserController extends CI_Controller
     }
 
     public function index()
-    {
-    }
-
-    public function Dashboard()
     {
     }
 }

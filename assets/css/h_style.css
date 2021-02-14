@@ -10,8 +10,8 @@
     display: inline-block;
     padding: 1em;
     margin: 1em;
-    background: #E8E8E8;
-    border: 2px solid #000;
+    background: rgb(22, 92, 157);
+    border: 2px solid rgb(22, 92, 157);
     z-index: 999;
 }
 
@@ -25,6 +25,7 @@ html {
 
 body {
     height: 100%;
+    width: 100%;
 }
 
 .navbar {
@@ -48,7 +49,7 @@ body {
 }
 
 .jb-2 {
-    background-image: url(/ignited-petfood/assets/img/content/tes.jpg);
+    background-image: url(/ignited-petfood/assets/img/content/cat.png);
     background-size: cover;
     text-align: center;
     height: 520px;
@@ -56,6 +57,11 @@ body {
 }
 
 .jumbotron .container {
+    position: relative;
+    z-index: 1;
+}
+
+.jb-2 .container {
     position: relative;
     z-index: 1;
 }
@@ -80,6 +86,24 @@ body {
 
 .jumbotron .display-4 span {
     font-weight: bold;
+}
+
+.jb-2::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    position: absolute;
+    bottom: 0;
+}
+
+.jb-2 .display-4 {
+    color: #fff;
+    margin-top: 90px;
+    font-size: 40px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9);
+    margin-bottom: 35px;
 }
 
 /* Card Panel */
@@ -120,6 +144,7 @@ body {
 .content1 p {
     margin: 20px;
     font-weight: 300;
+    text-align: justify;
 }
 
 .content1 img {
@@ -320,15 +345,15 @@ body {
     font-weight: bold
 }
 
-/*  Auth Login */
-
-/* End Auth Login */
-
 /* All Device */
 
 .btn-join {
     text-transform: uppercase;
-    border-radius: 40px;
+    border-radius: 5px;
+}
+
+.paymnt {
+    margin-top: 120px!important;
 }
 
 /* Desktop */
@@ -357,6 +382,14 @@ body {
         text-align: left;
     }
     .jumbotron .display-4 {
+        font-size: 48px;
+        text-align: right;
+    }
+    .jb-2 {
+        margin-top: -75px;
+        font-size: 48px;
+    }
+    .jb-2 .display-4 {
         font-size: 48px;
         text-align: right;
     }
