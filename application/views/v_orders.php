@@ -30,6 +30,9 @@
     <style>
         .navbar {
             background-color: rgb(22, 92, 157) !important;
+            position: sticky;
+            top: 0;
+            z-index: 9999
         }
 
         .quantity {
@@ -130,10 +133,10 @@
                         <a class="nav-link nav-head" href="<?= base_url('product'); ?>">Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
+                        <a class="nav-link nav-head" href="#contact">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blog</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -304,6 +307,7 @@
                             <!-- </div> -->
                         </div>
                         <p id="subtotal"></p>
+                        <!-- <button type="submit" class="btn btn-lg btn-danger float-right mt-4">Bayar Sekarang</button> -->
                         <a href="javascript:" type="submit" id="submit-form" class="btn btn-lg btn-danger float-right mt-4">Bayar Sekarang</a>
                     </div>
                     </form>
@@ -316,7 +320,7 @@
     <!-- End Card -->
 
     <!-- Contact -->
-    <section class="contact">
+    <section class="contact" id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 text-white">
@@ -455,7 +459,9 @@
                     data: $('#userCart').serialize(),
 
                     success: function(data) {
-
+                        if (data.responce == 'success') {
+                            window.location.replace("http://sidanmor.com");
+                        }
                     }
                 });
             });

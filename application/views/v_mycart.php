@@ -1,9 +1,3 @@
-<?php
-// $tmp = explode(',', $product['picture_path']);
-// $file_extension = end($tmp);
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,97 +19,54 @@
 
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <script src="<?= base_url('assets/js/jquery/jquery.min.js') ?>"></script>
-    <title><?= $product['product_name'] ?></title>
+    <title><?= $title ?></title>
 
     <style>
+        h1 {
+            color: #88B04B;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .bulet {
+            color: #9ABC66;
+            font-size: 100px;
+            line-height: 200px;
+            margin-left: -15px;
+        }
+
+        .card {
+            background: white;
+            padding: 60px;
+            border-radius: 4px;
+            box-shadow: 0 2px 3px #C8D0D8;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
         .navbar {
             background-color: rgb(22, 92, 157) !important;
-        }
-
-        .quantity {
-            display: inline-block;
-
-        }
-
-        .quantity .input-text.qty {
-            width: 35px;
-            height: 39px;
-            padding: 0 5px;
-            text-align: center;
-            background-color: transparent;
-            border: 1px solid #efefef;
-            pointer-events: none;
-        }
-
-        .quantity.buttons_added {
-            text-align: left;
-            position: relative;
-            white-space: nowrap;
-            vertical-align: top;
-        }
-
-        .quantity.buttons_added input {
-            display: inline-block;
-            margin: 0;
-            vertical-align: top;
-            box-shadow: none;
-        }
-
-        .quantity.buttons_added .minus,
-        .quantity.buttons_added .plus {
-            padding: 7px 10px 8px;
-            height: 41px;
-            background-color: #ffffff;
-            border: 1px solid #efefef;
-            cursor: pointer;
-        }
-
-        .quantity.buttons_added .minus {
-            border-right: 0;
-        }
-
-        .quantity.buttons_added .plus {
-            border-left: 0;
-        }
-
-        .quantity.buttons_added .minus:hover,
-        .quantity.buttons_added .plus:hover {
-            background: #eeeeee;
-        }
-
-        .quantity input::-webkit-outer-spin-button,
-        .quantity input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            margin: 0;
-        }
-
-        .quantity.buttons_added .minus:focus,
-        .quantity.buttons_added .plus:focus {
-            outline: none;
-        }
-
-        .product_price {
-            background: transparent;
-            border: 0;
-            border-style: none;
-            border-color: transparent;
-            outline: none;
-            outline-offset: 0;
-            box-shadow: none;
-            pointer-events: none;
-            display: inline-block;
-            color: rgb(22, 92, 157);
-            font-weight: bold;
-            font-size: 30px;
+            /* position: sticky; */
+            top: 0;
+            z-index: 1020
         }
     </style>
+
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light ">
         <div class="container">
             <a class="navbar-brand" href="#">Pet Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +84,7 @@
                         <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blog</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -165,133 +116,22 @@
             </div>
         </div>
     </nav>
-
-
     <!-- End Navbar -->
 
-    <!--end shopping-cart -->
-    <!-- 
-    </div> -->
-    <!--end container -->
 
-
+    <!-- Card Info -->
     <div class="container">
         <div class="backTop"><i class="fas fa-arrow-up"></i></div>
 
-        <div class="col-lg-12 mt-4">
-            <p><a href="<?= base_url('home') ?>" style="text-decoration:none">Home</a> / <a href="<?= base_url('product') ?>" style="text-decoration:none">Product</a> / My Order</p>
-            <hr>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card border border-secondary">
-                    <div class="card-body">
-                        <h5 class="card-title">Your cart</h5>
-                        <?php foreach ($product as $me) :
-
-                        ?>
-                            <input type="text" value="<?= $me['product_id'] ?>">
-                        <?php endforeach; ?>
-                        <hr>
-                        <div class="row mycart">
-                            <div class="col-md-4">
-                                <form id="userCart" action="" method="">
-
-
-
-                                    <img src="<?= base_url('uploads/') . $file_extension ?>" width="55%" alt="">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="d-flex justify-content-between">
-                                    <p class="font-weight-bold"><?= $product['product_name'] ?></p>
-                                    <!-- <a href="#" class="btn btn-outline-danger trash" data-id="<?= $product['id'] ?>"><i class="fas fa-trash"></i></a> -->
-                                </div>
-                                <div class="quantity buttons_added">
-                                    <input type="button" value="-" class="minus">
-                                    <input type="number" step="1" min="1" max="" name="quantity" id="quantity" value="<?= $qty ?>" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
-                                    <input type="button" value="+" class="plus">
-                                </div>
-                                <br>
-                                <br>
-                                <input type="text" name="product_price" class="product_price" tabindex="-1" value="Rp <?= number_format($product['price'], 0, ',', '.') ?>">
-                                <!-- <h5 style="display:inline-block; color:rgb(22, 92, 157);  font-weight: bold;">Rp <?= number_format($product['price'], 0, ',', '.') ?></h5> -->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label for="address" class="mt-2">Address</label>
-                                <textarea name="address" class="form-control" required id="address" cols="30" rows="2"></textarea>
-                                <label for="note" class="mt-2">Note</label>
-                                <textarea class="form-control" id="note" name="note" required cols="30" rows="2"></textarea>
-                            </div>
-
-                        </div>
-                    </div>
+        <section class="row" style="margin-top: 65px!important">
+            <div class="card text-center">
+                <div style="border-radius:200px; height:250px; width:200px; background: #F8FAF5; margin:0 auto;">
+                    <i class="checkmark bulet">✓</i>
                 </div>
+                <h1>Thank you for your purchase!</h1>
+                <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
             </div>
-            <div class="col-md-4 mt-4 mt-md-0">
-                <div class="card border border-secondary sticky-top">
-                    <div class="card-body">
-                        <h4>Payment method</h4>
-                        <hr>
-                        <input type="hidden" name="product_id" id="product_id" value="<?= $product['id'] ?>">
-                        <input type="hidden" name="email" id="email" value="<?= $session['email'] ?>">
-                        <input type="hidden" name="status" id="status" value="PROSES">
-                        <input type="hidden" name="price" id="price" " value="">
-                        <!-- <input type=" hidden" name="sub_total" id="sub_total" tabindex="-1" value=""> -->
-
-                        <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                        <label for="">Pembayaran</label>
-                        <select class="form-control" id="payment_method" name="payment_method" required>
-                            <option value="">Pilih</option>
-                            <option value="BNI">ATM BNI</option>
-                            <option value="MANDIRI">ATM Mandiri</option>
-                            <option value="BCA">ATM BCA</option>
-                        </select>
-
-                        <p id="method"></p>
-                        <!-- <label for="address" class="mt-2">Address</label>
-                            <textarea name="address" class="form-control" id="address" cols="30" rows="3"></textarea>
-                            <label for="note" class="mt-2">Note</label>
-                            <textarea class="form-control" id="note" name="note" cols="30" rows="3"></textarea> -->
-                        <label for="" class="mt-3">
-                            <p><b>Ringkasan</b></p>
-                            <hr>
-                        </label>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-between">
-                                    <span>Total Barang</span>
-                                    <span id="total_barang"></span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Harga Barang</span>
-                                    <span id="harga_barang"></span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Biaya Kirim</span>
-                                    <span id="ongkos_kirim"></span>
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span>Subtotal</span>
-                                    <span id="total_harga"></span>
-                                </div>
-                                <!-- <p>Total Harga</p> -->
-                            </div>
-                            <!-- <div class="total_harga"> -->
-                            <!-- <p style="color:rgb(22, 92, 157);"><?= number_format($product['price'], 0, ',', '.') ?></p> -->
-                            <!-- </div> -->
-                        </div>
-                        <p id="subtotal"></p>
-                        <a href="javascript:" type="submit" id="submit-form" class="btn btn-lg btn-danger float-right mt-4">Bayar Sekarang</a>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
 
     </div>
     <!-- End Card -->
@@ -343,38 +183,10 @@
     <!-- Toastr JS -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <!-- Datatables -->
-    <!-- <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
-    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script> -->
+
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-    <script>
-        $("#payment_method").change(function() {
-            var getValue = $(this).val();
-            $('#method').html('');
-            $('#method').append('<div class="alert alert-danger mt-2">' + getValue + '</div>')
 
-        });
-        subtotal();
 
-        function subtotal() {
-            var numFormat = new Intl.NumberFormat("en-ID");
-            var price = <?= $product['price'] ?>;
-            var qty = parseInt($('#quantity').val());
-
-            var total = price * qty + 10000;
-
-            $('#total_barang').html('');
-            $('#harga_barang').html('');
-            $('#total_harga').html('');
-            $('#ongkos_kirim').html('');
-            $('#price').val(total);
-            $('#total_barang').append('<p id="total_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">' + qty + '</p>');
-            $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 10,000</p>');
-            $('#harga_barang').append('<p id="harga_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(price) + '</p>');
-            $('#total_harga').append('<p id="total_harga_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(total) + '</p>');
-
-        }
-    </script>
     <script>
         var $backToTop = $(".backTop");
         $backToTop.hide();
@@ -391,63 +203,6 @@
                 scrollTop: 0
             }, 500);
         });
-
-
-        $('.trash').on('click', function(e) {
-            var id = $(this).data('id');
-            alert(id)
-        });
-    </script>
-    </script>
-
-    <script>
-        function increment() {
-            jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function(a, b) {
-                var c = jQuery(b);
-                c.addClass("buttons_added"), c.children().first().before('<input type="button" value="-" class="minus" />'), c.children().last().after('<input type="button" value="+" class="plus" />')
-            })
-        }
-        String.prototype.getDecimals || (String.prototype.getDecimals = function() {
-            var a = this,
-                b = ("" + a).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-            return b ? Math.max(0, (b[1] ? b[1].length : 0) - (b[2] ? +b[2] : 0)) : 0
-        }), jQuery(document).ready(function() {
-            increment()
-        }), jQuery(document).on("updated_wc_div", function() {
-            increment()
-        }), jQuery(document).on("click", ".plus, .minus", function() {
-            var a = jQuery(this).closest(".quantity").find(".qty"),
-                b = parseFloat(a.val()),
-                c = parseFloat(a.attr("max")),
-                d = parseFloat(a.attr("min")),
-                e = a.attr("step");
-            b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0), "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1), jQuery(this).is(".plus") ? c && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
-            subtotal();
-        });
-
-        $(document).ready(function() {
-            $('#submit-form').click(function(e) {
-                e.preventDefault();
-                // var product_id = $('#product_id').val();
-                // var status = $('#status').val();
-                // var quantity = $('#quantity').val();
-                // var address = $('#address').val();
-                // var note = $('#note').val();
-                // var subtotal = $('#subtotal').val();
-                // var payment_method = $('#payment_method').val();
-
-                $.ajax({
-                    url: '<?= base_url('home/buyNow') ?>',
-                    type: 'post',
-                    dataType: 'json',
-                    data: $('#userCart').serialize(),
-
-                    success: function(data) {
-
-                    }
-                });
-            });
-        })
     </script>
 </body>
 

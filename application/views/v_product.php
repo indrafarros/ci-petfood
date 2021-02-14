@@ -30,6 +30,9 @@
     <style>
         .navbar {
             background-color: rgb(22, 92, 157) !important;
+            position: sticky;
+            top: 0;
+            z-index: 1020
         }
 
 

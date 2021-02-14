@@ -108,10 +108,10 @@
                         <a class="nav-link nav-head" href="<?= base_url('product'); ?>">Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
+                        <a class="nav-link nav-head" href="#contact">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blog</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -280,7 +280,7 @@
     <!-- End Card -->
 
     <!-- Contact -->
-    <section class="contact">
+    <section class="contact" id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 text-white">

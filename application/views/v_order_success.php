@@ -22,30 +22,45 @@
     <title><?= $title ?></title>
 
     <style>
-        /* .navbar {
-            background-color: rgb(22, 92, 157) !important;
-        } */
+        h1 {
+            color: #88B04B;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .bulet {
+            color: #9ABC66;
+            font-size: 100px;
+            line-height: 200px;
+            margin-left: -15px;
+        }
+
+        .card {
+            background: white;
+            padding: 60px;
+            border-radius: 4px;
+            box-shadow: 0 2px 3px #C8D0D8;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
         .navbar {
             background-color: rgb(22, 92, 157) !important;
-            position: sticky;
+            /* position: sticky; */
             top: 0;
             z-index: 1020
         }
-
-        .product-img {
-            width: 12%;
-            padding: 5px;
-        }
-
-        .car-panel {
-            background-color: #fff;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-            /* border-radius: 5px; */
-            /* margin-top: -205px; */
-            background-image: linear-gradient(to bottom, rgb(22, 92, 157), rgba(0, 0, 0, 0.1));
-            padding: 25px;
-        }
     </style>
+
 </head>
 
 <body>
@@ -108,91 +123,15 @@
     <div class="container">
         <div class="backTop"><i class="fas fa-arrow-up"></i></div>
 
-        <!-- Panel -->
-        <!-- <div class="row justify-content-center">
-            <div class="col-12 panel-card" style="margin-top: -200px!important">
-                <div class="carousel" data-flickity='{"contain": true, "fade": true, "autoPlay": 4500, "wrapAround": true}'>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
-                    <div class="carousel-cell"></div>
+        <section class="row" style="margin-top: 65px!important">
+            <div class="card text-center">
+                <div style="border-radius:200px; height:250px; width:200px; background: #F8FAF5; margin:0 auto;">
+                    <i class="checkmark bulet">✓</i>
                 </div>
-            </div>
-        </div> -->
-
-        <!-- End Panel -->
-
-        <!-- Content -->
-        <div class="row content1 shadow-sm">
-            <div class="col-lg-6">
-                <h2>Give your buddy best <span>food</span></h2>
-                <p style="font-size: 22px; font-weight: 400;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ipsam debitis illo accusamus sit ipsa fugiat expedita ea saepe nemo earum sequi libero illum omnis enim rerum reiciendis, eveniet aspernatur.</p>
-            </div>
-            <div class="col-lg-6 text-center">
-                <img src="<?= base_url('assets/img/content/petdog.jpg') ?>" alt="Content1" class="img-fluid">
-            </div>
-        </div>
-
-        <section class="row content1">
-            <div class="col-lg-12 text-center">
-                <p class="text-center" style="font-weight: 900; font-size: 34px; color:#EA2D1D">Provide nutrition for health. Enrich his life </p>
-                <p class="text-center" style="font-weight: 400; font-size: 22px; ">Get the nutritional and health advice you will need to help your cat thrive at every stage of its life. Explore the various articles, information and guides below! </p>
-                <a href="" class="btn btn-secondary btn-lg" style="border-radius: 50px">See more </a>
+                <h1>Thank you for your purchase!</h1>
+                <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
             </div>
         </section>
-        <!-- End Content 1-->
-
-        <!-- Content  -->
-        <section class="row content1 shadow-sm">
-            <div class="col-lg-6 text-center">
-                <img src="<?= base_url('assets/img/content/cat-birman.jfif') ?>" style="height: 300px" alt="Content1" class="img-fluid">
-            </div>
-            <div class="col-lg-6">
-                <h2>Healthy start in<span> life</span></h2>
-                <p style="font-size: 22px; font-weight: 400;">Kitten childhood is full of profound changes in physique and behavior, and it has to deal with a difficult learning curve for new owners. Find out how you can give your kitten the best start in life so that they develop into strong, healthy cats. </p>
-            </div>
-        </section>
-        <!-- End Content  -->
-
-
-        <section class="row content1 shadow-sm">
-            <div class="col-lg-12 text-center">
-                <p class="text-center" style="font-weight: 900; font-size: 28px">Product Brand </p>
-                <img src="<?= base_url('assets/img/brand/royal-canin.png') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/american-journey.png') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/Tile-Orijen.jpg') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/Tile-Acana-4-updated.jpg') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/Nulo-1x.jpg') ?>" alt="" class="product-img">
-                <img src="<?= base_url('assets/img/brand/kong.png') ?>" alt="" class="product-img">
-            </div>
-        </section>
-
-        <section class="row content1 shadow-sm">
-            <div class="col-lg-12 text-center mb-3">
-                <p class="text-center" style="font-weight: 900; font-size: 40px">Type of Food </p>
-            </div>
-            <div class="col-lg-6 text-center">
-                <h2 class="text-center"><span>Dry</span></h2>
-                <img src="<?= base_url('uploads/16128758696022885d8dafc.jpg') ?>" class="img-fluid" width="30%" alt="">
-                <p style="font-size: 16px; font-weight: 400;">The best camera for you will vary based on whether or not you'll use the camera daily, monthly, or only a couple of times annually. The more you use the camera, the more it makes sense to invest hundreds of dollars in it</p>
-                <a href="" class="btn btn-danger">See more</a>
-            </div>
-            <div class="col-lg-6 text-center">
-                <h2 class="text-center"><span>Wet</span></h2>
-                <img src="<?= base_url('uploads/16128758696022885d8dafc.jpg') ?>" class="img-fluid" width="30%" alt="">
-                <p style="font-size: 16px; font-weight: 400;">The best camera for you will vary based on whether or not you'll use the camera daily, monthly, or only a couple of times annually. The more you use the camera, the more it makes sense to invest hundreds of dollars in it</p>
-                <a href="" class="btn btn-danger">See more</a>
-            </div>
-        </section>
-
-        <!-- Content 3 -->
-        <!-- <section class="content3">
-
-        </section> -->
-        <!-- End Content 3 -->
-
-        <!-- Content 4 -->
-
-        <!-- End Content 4 -->
 
     </div>
     <!-- End Card -->

@@ -93,6 +93,7 @@ class HomeController extends CI_Controller
 
     public function buyNow()
     {
+        // $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         if ($this->session->userdata('email')) {
 
             if ($this->input->is_ajax_request()) {
@@ -123,10 +124,14 @@ class HomeController extends CI_Controller
                         );
                         $this->transaction->new_item($order_item);
 
+                        // $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                        // Order item success! </div>');
+                        // redirect('home/orderSuccess');
                         $data = array(
                             'csrfName' => $this->security->get_csrf_token_name(),
                             'csrfHash' => $this->security->get_csrf_hash(),
-                            'responce' => 'success', 'message' => 'Transaction successfuly'
+                            'responce' => 'success',
+                            'message' => 'Transaction successfuly'
                         );
                     } else {
 
@@ -134,10 +139,10 @@ class HomeController extends CI_Controller
                             'product_id' => $post['id'],
                             'email' => $email,
                             'qty' => $_POST['quantity'],
-                            'sub_total' => '0',
-                            'address' => 'TES',
-                            'status' => 'IN CART',
-                            'payment_method' => 'NULL',
+                            'sub_total' => $_POST['price'],
+                            'address' => $_POST['address'],
+                            'status' => 'PENDING',
+                            'payment_method' => $_POST['payment_method'],
                             'created_at' => date('Y-m-d H:i:s')
                         );
                         $this->transaction->new_order($new_data);
@@ -151,10 +156,14 @@ class HomeController extends CI_Controller
 
                         $this->transaction->new_item($order_item);
 
+                        // $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                        // Order item success! </div>');
+                        // redirect('home/orderSuccess');
                         $data = array(
                             'csrfName' => $this->security->get_csrf_token_name(),
                             'csrfHash' => $this->security->get_csrf_hash(),
-                            'responce' => 'success', 'message' => 'Add to cart successfuly',
+                            'responce' => 'success',
+                            'message' => 'Add to cart successfuly',
                             'test' => $user_cart = $this->transaction->getUserOrder($email, $id)
                         );
                     }
@@ -180,6 +189,10 @@ class HomeController extends CI_Controller
                 } else {
                     $data = array('responce' => 'error', 'message' => 'Product not found');
                 }
+            } else {
+                // $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                // You must login to continue this order </div>');
+                // redirect('auth/login');
             }
         } else {
             $data = array('responce' => 'error', 'message' => 'You must login to continue this order.');
@@ -271,7 +284,7 @@ class HomeController extends CI_Controller
         echo json_encode($data);
     }
 
-    public function myOrder()
+    public function myCart()
     {
         $data = array(
             'session' => $this->session->userdata(),
@@ -280,6 +293,23 @@ class HomeController extends CI_Controller
         );
 
         $this->load->view('v_mycart', $data);
+    }
+
+    public function orderSuccess()
+    {
+        $email = $this->session->userdata('email');
+        if ($email) {
+            $data = array(
+                'title' => 'Checkout success',
+                'session' => $this->session->userdata(),
+                'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows(),
+                'product' => $this->transaction->getMyCart($this->session->userdata('email'))->result_array()
+            );
+
+            $this->load->view('v_order_success', $data);
+        } else {
+            redirect('home');
+        }
     }
 
     public function blog()
