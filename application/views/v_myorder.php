@@ -1,9 +1,3 @@
-<?php
-// $tmp = explode(',', $product['picture_path']);
-// $file_extension = end($tmp);
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,67 +19,49 @@
 
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <script src="<?= base_url('assets/js/jquery/jquery.min.js') ?>"></script>
-    <title><?= $product['product_name'] ?></title>
+    <title><?= $title ?></title>
 
     <style>
+        h1 {
+            color: #88B04B;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+
+
+        .bulet {
+            color: #9ABC66;
+            font-size: 100px;
+            line-height: 200px;
+            margin-left: -15px;
+        }
+
+        .card {
+            background: white;
+            padding: 60px;
+            border-radius: 4px;
+            box-shadow: 0 2px 3px #C8D0D8;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
         .navbar {
             background-color: rgb(22, 92, 157) !important;
-        }
-
-        .qty .hitung {
-            color: #555;
-            display: inline-block;
-            vertical-align: top;
-            font-size: 18px;
-            font-weight: 300;
-            line-height: 30px;
-            padding: 0 2px;
-            min-width: 35px;
-            text-align: center;
-            border: 0;
-            width: 2%;
-        }
-
-        .qty .plus {
-            cursor: pointer;
-            display: inline-block;
-            vertical-align: top;
-            /* background:#eee; */
-            border: #ddd solid 1px;
-            color: #999;
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            font: 26px/1 "Arial", sans-serif;
-            text-align: center;
-        }
-
-
-        .qty .minus {
-            cursor: pointer;
-            display: inline-block;
-            vertical-align: top;
-            /* background:#eee; */
-            border: #ddd solid 1px;
-            color: #999;
-            width: 30px;
-            height: 30px;
-            font: 26px/1 "Arial", sans-serif;
-            text-align: center;
-            border-radius: 5px;
-            background-clip: padding-box;
-        }
-
-        .minus:hover {
-            background-color: #eee !important;
+            /* position: sticky; */
+            top: 0;
+            z-index: 1020
         }
     </style>
+
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light ">
         <div class="container">
             <a class="navbar-brand" href="#">Pet Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +79,7 @@
                         <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blog</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -112,7 +88,7 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-danger btn-join dropdown-toggle 12" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="<?= base_url('auth'); ?>"><?= $this->session->userdata('first_name') ?></a>
                             <div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="<?= base_url('myorder') ?>">My Order</a>
+                                <a class="dropdown-item" href="<?= base_url('auth') ?>">My Order</a>
                                 <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>">Logout</a>
                             </div>
                         </li>
@@ -120,7 +96,7 @@
                     <div class="cart-item">
                         <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('home/mycart') ?>">
                             <i class="fas fa-shopping-cart"></i> Cart
-                            <span class="badge badge-warning" id="cart_shop">0</span>
+                            <span class="badge badge-warning" id="cart_shop"><?= $mycart ?></span>
                         </a>
                     </div>
 
@@ -135,77 +111,54 @@
             </div>
         </div>
     </nav>
-
-
     <!-- End Navbar -->
 
-    <!--end shopping-cart -->
-    <!-- 
-    </div> -->
-    <!--end container -->
 
-
+    <!-- Card Info -->
     <div class="container">
         <div class="backTop"><i class="fas fa-arrow-up"></i></div>
-
-        <!-- navbar -->
-
         <div class="col-lg-12 mt-4">
-            <p><a href="<?= base_url('home') ?>" style="text-decoration:none">Home</a> / <a href="<?= base_url('product') ?>" style="text-decoration:none">Product</a> / <?= $product['product_name'] ?></p>
+            <p><a href="<?= base_url('home') ?>" style="text-decoration:none">Home</a> / My Order</p>
             <hr>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div>
-                            <div class="container">
-                                <img src="<?= base_url('uploads/') . $product['picture_path'] ?>" alt="<?= $product['product_name'] ?>" class="img-fluid text-center" style="width:70%;" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-7">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">My Order</h5>
+                        <hr>
                         <div class="row">
-                            <div class="col-md-10">
-                                <h4>
-                                    <?= $product['product_name'] ?> </h4>
-                            </div>
+                            <table class="table table-borderless table-responsive">
+                                <tbody>
+                                    <?php
+                                    $value = 0;
+                                    $value_qty = 0;
+                                    foreach ($allcart as $me) :
+
+                                    ?>
+
+                                        <tr>
+                                            <td class="w-25"><img class="img-fluid" src="<?= base_url('uploads/') . $me['picture_path'] ?>" /></td>
+                                            <!-- <td> <img src="<?= base_url('uploads/') . $me['picture_path'] ?>" class="img-responsive" style="width:250px" alt=""></td> -->
+                                            <td class="text-center"><?= $me['product_name'] ?></td>
+                                            <td class="text-center"> <?= $me['qty'] ?></td>
+                                            <td class="float-right"><?= $me['sub_total'] ?></td>
+                                            <td class="text-center"><span class="badge badge-danger"><?= $me['status'] ?></span></td>
+                                        </tr>
+                                    <?php
+                                        $value += $me['sub_total'];
+                                        $value_qty += $me['qty'];
+                                    endforeach ?>
+                                </tbody>
+                            </table>
                         </div>
-                        <br>
-                        <h5 style="display:inline-block; color:rgb(22, 92, 157);  font-weight: bold;">Rp <?= number_format($product['price'], 0, ',', '.') ?></h5>
-                        <hr class="mt-0">
-                        <div class="qty mt-3">
-                            <span class="minus">-</span>
-                            <input type="number" class="hitung" name="qty" value="1">
-                            <span class="plus">+</span>
-                        </div>
-                        <hr class="mb-0">
-                        <br>
-                        <?php if ($this->session->userdata('email')) {
-
-                            echo '<a href="' . base_url('home/add_to_cart') . '" class="btn btn-danger"> <i class="fas fa-shopping-cart"></i> Beli Sekarang</a>';
-                        } else {
-                            echo '<a href="' . base_url('auth/login') . '" class="btn btn-danger checkUser"> <i class="fas fa-shopping-cart"></i> Beli Sekarang</a>';
-                        }
-
-                        ?>
-
-                        <br>
+                        <hr>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <section class="content3">
-
-    </section>
-
-    <!-- Content 2 -->
-
-    <!-- End Content 2 -->
-
-
 
     </div>
     <!-- End Card -->
@@ -257,32 +210,14 @@
     <!-- Toastr JS -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <!-- Datatables -->
-    <!-- <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
-    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script> -->
+
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+
     <script>
-        // $('.checkUser').on('click', function(e) {
-        //     var user = <?= $session['is_login'] ?>;
-        //     if (user == true) {
-
-        //     } else {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             text: 'Something went wrong!',
-        //             footer: '<a href>Why do I have this issue?</a>'
-        //         })
-
-        //     }
-        // });
-
-        // function add_to_cart() {
+        // subtotal();
 
 
-        // }
-    </script>
-    <script>
         var $backToTop = $(".backTop");
         $backToTop.hide();
         $(window).on('scroll', function() {
@@ -298,20 +233,8 @@
                 scrollTop: 0
             }, 500);
         });
-
-        $(document).ready(function() {
-            $('.hitung').prop('disabled', true);
-            $(document).on('click', '.plus', function() {
-                $('.hitung').val(parseInt($('.hitung').val()) + 1);
-            });
-            $(document).on('click', '.minus', function() {
-                $('.hitung').val(parseInt($('.hitung').val()) - 1);
-                if ($('.hitung').val() == 0) {
-                    $('.hitung').val(1);
-                }
-            });
-        });
     </script>
+
 </body>
 
 </html>

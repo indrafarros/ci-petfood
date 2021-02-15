@@ -30,12 +30,7 @@
             margin-bottom: 10px;
         }
 
-        p {
-            color: #404F5E;
-            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-            font-size: 20px;
-            margin: 0;
-        }
+
 
         .bulet {
             color: #9ABC66;
@@ -93,7 +88,7 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-danger btn-join dropdown-toggle 12" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="<?= base_url('auth'); ?>"><?= $this->session->userdata('first_name') ?></a>
                             <div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="<?= base_url('auth') ?>">My Order</a>
+                                <a class="dropdown-item" href="<?= base_url('myorder') ?>">My Order</a>
                                 <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>">Logout</a>
                             </div>
                         </li>
@@ -122,16 +117,109 @@
     <!-- Card Info -->
     <div class="container">
         <div class="backTop"><i class="fas fa-arrow-up"></i></div>
+        <div class="col-lg-12 mt-4">
+            <p><a href="<?= base_url('home') ?>" style="text-decoration:none">Home</a> / My Order</p>
+            <hr>
+        </div>
 
-        <section class="row" style="margin-top: 65px!important">
-            <div class="card text-center">
-                <div style="border-radius:200px; height:250px; width:200px; background: #F8FAF5; margin:0 auto;">
-                    <i class="checkmark bulet">✓</i>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">Your cart</h5>
+                        <hr>
+                        <div class="row">
+                            <table class="table table-borderless table-responsive">
+                                <tbody>
+                                    <?php
+                                    $value = 0;
+                                    $value_qty = 0;
+                                    foreach ($product as $me) :
+
+                                    ?>
+
+                                        <tr>
+                                            <td class="w-25"><img class="img-fluid" src="<?= base_url('uploads/') . $me['picture_path'] ?>" /></td>
+                                            <!-- <td> <img src="<?= base_url('uploads/') . $me['picture_path'] ?>" class="img-responsive" style="width:250px" alt=""></td> -->
+                                            <td class="text-center"><?= $me['product_name'] ?></td>
+                                            <td class="text-center"> <?= $me['qty'] ?></td>
+                                            <td class="float-right"><?= $me['sub_total'] ?></td>
+                                            <td class="text-center"><a href="#" class="text-danger trash"><i class="fas fa-trash"></i></a></td>
+                                        </tr>
+                                    <?php
+                                        $value += $me['sub_total'];
+                                        $value_qty += $me['qty'];
+                                    endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <div class="row">
+
+                            <div class="col-md-6 mt-3">
+                                <label for="">Provinsi</label>
+                                <select name="province" id="province" class="form-control">
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="">Kota</label>
+                                <select name="city" id="city" class="form-control">
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="">Expedisi</label>
+                                <select name="expedition" id="expedition" class="form-control">
+
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mt-3">
+                                <label for="">Expedisi</label>
+                                <select name="cost" id="cost" class="form-control">
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="address">Address</label>
+                                <textarea name="address" class="form-control" required id="address" cols="30" rows="2" required></textarea>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="note">Note</label>
+                                <textarea class="form-control" id="note" name="note" required cols="30" rows="2" required></textarea>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="font-weight-bold">Total Barang</span>
+                                        <span id="total_barang" style="color:rgb(22, 92, 157); font-weight:bold"><?= $value_qty ?></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="font-weight-bold">Biaya Kirim</span>
+                                        <span id="ongkos_kirim" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</span>
+                                        <input type="hidden" value="0" id="ongkos">
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="font-weight-bold">Subtotal</span>
+                                        <span id="total_harga" style="color:rgb(22, 92, 157); font-weight:bold">Rp. <?= number_format($value, 0, '.', ',') ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <div class="float-right">
+                                    <input type="hidden" id="value" value="<?= $value ?>">
+                                    <input type="hidden" id="value_qty" value="<?= $value_qty ?>">
+                                    <button type="button" class="btn btn-outline-danger btn-md"> Bayar Sekarang </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h1>Thank you for your purchase!</h1>
-                <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
             </div>
-        </section>
+        </div>
+    </div>
 
     </div>
     <!-- End Card -->
@@ -188,6 +276,45 @@
 
 
     <script>
+        // subtotal();
+        $(document).on("click", ".trash", function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        })
+
+        function subtotal() {
+            var numFormat = new Intl.NumberFormat("en-ID");
+            var price = parseInt($('#value').val());
+            var qty = parseInt($('#value_qty').val());
+            var ongkos_kirim = parseInt($('#ongkos').val());
+            // var total = price * qty + ongkos_kirim;
+            var total = ongkos_kirim + price;
+            // $('#total_barang').html('');
+
+            $('#total_harga').html('');
+            // $('#price').val(total);
+            // $('#total_barang').append('<p id="total_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">' + qty + '</p>');
+            $('#total_harga').append('<p id="total_harga_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(total) + '</p>');
+
+        }
+
         var $backToTop = $(".backTop");
         $backToTop.hide();
         $(window).on('scroll', function() {
@@ -202,6 +329,86 @@
             $("html, body").animate({
                 scrollTop: 0
             }, 500);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '<?= base_url('API_RajaOngkir/getProvince') ?>',
+                type: 'post',
+                success: function(res) {
+                    // console.log(res)
+                    $("select[name=province]").html(res);
+
+                }
+            });
+
+            $("select[name=province]").on("change", function(e) {
+                e.preventDefault();
+                var province_id = $("option:selected", this).attr('province_id');
+
+                $.ajax({
+                    url: '<?= base_url('API_RajaOngkir/getCity') ?>',
+                    type: 'post',
+                    data: 'province_id=' + province_id,
+                    success: function(res) {
+                        // console.log(res);
+                        $("select[name=city]").html(res);
+                        $("select[name=cost]").html("<option>Pilih Kota</option>");
+                    }
+                });
+            });
+
+            $("select[name=city]").on("change", function(e) {
+                e.preventDefault();
+                $('#ongkos_kirim').html('');
+                $('#ongkos').val('0');
+                $('#ongkos_kirim').append('<span id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</span>');
+                subtotal();
+                $.ajax({
+                    url: '<?= base_url('API_RajaOngkir/getExpedition') ?>',
+                    type: 'post',
+
+                    success: function(res) {
+                        console.log(res);
+                        $("select[name=expedition]").html(res);
+                        $("select[name=cost]").html("<option> Pilih</option>");
+
+                    }
+                })
+            })
+
+            $("select[name=expedition]").on("change", function(e) {
+                e.preventDefault();
+                $('#ongkos_kirim').html('');
+                var id_expedition = $("select[name=expedition]").val();
+                var id_city = $("option:selected", "select[name=city]").attr('city_id');
+                $('#ongkos_kirim').append('<span id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</span>');
+                $('#ongkos').val('0');
+                subtotal();
+
+                // alert(id_city);
+                $.ajax({
+                    url: '<?= base_url('API_RajaOngkir/getCost') ?>',
+                    type: 'post',
+                    data: 'id_expedition=' + id_expedition + '&id_city=' + id_city,
+                    success: function(res) {
+                        $("select[name=cost]").html(res);
+                        // console.log(res);
+                    }
+                });
+            });
+
+            $("select[name=cost]").on("change", function(e) {
+                var numFormat = new Intl.NumberFormat("en-ID");
+                var data_value = $("option:selected", this).attr('data_value');
+                $('#ongkos').val(data_value);
+
+                $('#ongkos_kirim').html('');
+                $('#ongkos_kirim').append('<span id="harga_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(data_value) + '</span>');
+                subtotal();
+                // alert(data_value);
+            })
         });
     </script>
 </body>

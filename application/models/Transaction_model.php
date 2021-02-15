@@ -3,9 +3,9 @@
 class Transaction_model extends CI_Model
 {
 
+    // In cart
     public function getMyCart($email, $product_id = null)
     {
-
         if ($product_id == null) {
             $this->db->where('email', $email);
             $this->db->where('status', 'IN CART');
@@ -19,8 +19,25 @@ class Transaction_model extends CI_Model
         // return $query->num_rows();
     }
 
-    public function checkCart($email, $product_id)
+    public function getAllOrder($email)
     {
+        $sql = "select orders.*, products.id, products.picture_path, products.product_name from orders left join products on orders.product_id = products.id WHERE email='$email' ORDER BY status DESC";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    // Order success
+    public function checkCart($email)
+    {
+        $sql = "select orders.*, products.id, products.picture_path, products.product_name from orders left join products on orders.product_id = products.id WHERE email='$email' AND status!='SUCCESS' and status !='PENDING'";
+        $query = $this->db->query($sql);
+        return $query;
+
+        // $this->db->select('orders', 'products.id', 'products.picture_path');
+        // $this->db->join('products', 'products.id = orders.product_id', 'left');
+        // $this->db->where('status !=', 'SUCCESS');
+        // $this->db->where('email', $email);
+        // return $this->db->get();
         // $this->db->where
     }
 
@@ -29,6 +46,14 @@ class Transaction_model extends CI_Model
         $this->db->where('email', $email);
         $this->db->where('product_id', $id);
         $this->db->where('status', 'IN CART');
+        return $this->db->get('orders')->row_array();
+    }
+
+    public function getPendingOrder($email, $id)
+    {
+        $this->db->where('email', $email);
+        $this->db->where('id', $id);
+        $this->db->where('status', 'PENDING');
         return $this->db->get('orders')->row_array();
     }
 

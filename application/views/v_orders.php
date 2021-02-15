@@ -145,7 +145,8 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-danger btn-join dropdown-toggle 12" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="<?= base_url('auth'); ?>"><?= $this->session->userdata('first_name') ?></a>
                             <div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="<?= base_url('auth') ?>">My Order</a>
+                                <a class="dropdown-item" href="<?= base_url('myorder') ?>">My Order</a>
+
                                 <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>">Logout</a>
                             </div>
                         </li>
@@ -195,6 +196,7 @@
                         <div class="row mycart">
                             <div class="col-md-4">
                                 <form id="userCart" action="" method="">
+                                    <input type="hidden" value="0" id="ongkos">
                                     <img src="<?= base_url('uploads/') . $product['picture_path'] ?>" width="55%" alt="">
                             </div>
                             <div class="col-md-8">
@@ -243,9 +245,9 @@
                             </div>
                             <div class="col-md-12 mt-2">
                                 <label for="address">Address</label>
-                                <textarea name="address" class="form-control" required id="address" cols="30" rows="2"></textarea>
+                                <textarea name="address" class="form-control" required id="address" cols="30" rows="2" required></textarea>
                                 <label for="note">Note</label>
-                                <textarea class="form-control" id="note" name="note" required cols="30" rows="2"></textarea>
+                                <textarea class="form-control" id="note" name="note" required cols="30" rows="2" required></textarea>
                             </div>
 
                         </div>
@@ -293,7 +295,9 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <span>Biaya Kirim</span>
-                                    <span id="ongkos_kirim"></span>
+                                    <span id="ongkos_kirim">
+                                        <p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>
+                                    </span>
                                 </div>
                                 <hr>
                                 <div class="d-flex justify-content-between">
@@ -383,8 +387,8 @@
             var numFormat = new Intl.NumberFormat("en-ID");
             var price = <?= $product['price'] ?>;
             var qty = parseInt($('#quantity').val());
-
-            var total = price * qty + 10000;
+            var ongkos_kirim = parseInt($('#ongkos').val());
+            var total = price * qty + ongkos_kirim;
 
             $('#total_barang').html('');
             $('#harga_barang').html('');
@@ -392,7 +396,7 @@
             // $('#ongkos_kirim').html('');
             $('#price').val(total);
             $('#total_barang').append('<p id="total_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">' + qty + '</p>');
-            $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
+            // $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
             $('#harga_barang').append('<p id="harga_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(price) + '</p>');
             $('#total_harga').append('<p id="total_harga_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(total) + '</p>');
 
@@ -444,7 +448,7 @@
         $(document).ready(function() {
             $('#submit-form').click(function(e) {
                 e.preventDefault();
-                // var product_id = $('#product_id').val();
+                var product_id = $('#product_id').val();
                 // var status = $('#status').val();
                 // var quantity = $('#quantity').val();
                 // var address = $('#address').val();
@@ -459,8 +463,16 @@
                     data: $('#userCart').serialize(),
 
                     success: function(data) {
+                        // alert(data.order_id);
+
                         if (data.responce == 'success') {
-                            window.location.replace("http://sidanmor.com");
+                            var order_id = data.order_id;
+
+                            location.href = 'ordersuccess?order_id=' + order_id;
+                            // window.location = '/home/ordersuccess?username=' + product_id;
+                            // window.location.replace("http://sidanmor.com");
+                        } else {
+                            Swal.fire();
                         }
                     }
                 });
@@ -497,7 +509,9 @@
             $("select[name=city]").on("change", function(e) {
                 e.preventDefault();
                 $('#ongkos_kirim').html('');
+                $('#ongkos').val('0');
                 $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
+                subtotal();
                 $.ajax({
                     url: '<?= base_url('API_RajaOngkir/getExpedition') ?>',
                     type: 'post',
@@ -517,6 +531,9 @@
                 var id_expedition = $("select[name=expedition]").val();
                 var id_city = $("option:selected", "select[name=city]").attr('city_id');
                 $('#ongkos_kirim').append('<p id="ongkos_kirim_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. 0</p>');
+                $('#ongkos').val('0');
+                subtotal();
+
                 // alert(id_city);
                 $.ajax({
                     url: '<?= base_url('API_RajaOngkir/getCost') ?>',
@@ -532,8 +549,11 @@
             $("select[name=cost]").on("change", function(e) {
                 var numFormat = new Intl.NumberFormat("en-ID");
                 var data_value = $("option:selected", this).attr('data_value');
+                $('#ongkos').val(data_value);
+
                 $('#ongkos_kirim').html('');
                 $('#ongkos_kirim').append('<p id="harga_barang_val" style="color:rgb(22, 92, 157); font-weight:bold">Rp. ' + numFormat.format(data_value) + '</p>');
+                subtotal();
                 // alert(data_value);
             })
         });

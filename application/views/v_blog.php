@@ -28,28 +28,18 @@
     <title><?= $title ?></title>
 
     <style>
-        .carousel-cell {
-            width: 66%;
-            /* height: 200px; */
-            margin-right: 10px;
-            background: #8C8;
-            border-radius: 5px;
-            counter-increment: gallery-cell;
+        .navbar {
+            background-color: rgb(22, 92, 157) !important;
+            position: sticky;
+            top: 0;
+            z-index: 1020
         }
 
         /* cell number */
-        .carousel-cell:before {
-            display: block;
-            text-align: center;
-            content: counter(gallery-cell);
-            line-height: 200px;
-            font-size: 80px;
-            color: white;
-        }
+
 
         .card {
             background: #fff;
-            border-top-right-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -72,13 +62,27 @@
             box-shadow: 0 15px 24px rgba(0, 0, 0, 0.11),
                 0 15px 24px var(--box-shadow-color);
         }
+
+        .navbar-fixed-top.scrolled {
+            background-color: rgb(22, 92, 157) !important;
+            transition: background-color 200ms linear;
+        }
     </style>
+
+    <script>
+        $(function() {
+            $(document).scroll(function() {
+                var $nav = $(".navbar-fixed-top");
+                $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+            });
+        });
+    </script>
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Pet Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,10 +97,10 @@
                         <a class="nav-link nav-head" href="<?= base_url('product'); ?>">Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Contacts</a>
+                        <a class="nav-link nav-head" href="#contact">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-head" href="<?= base_url('about'); ?>">Blogs</a>
+                        <a class="nav-link nav-head" href="<?= base_url('blog'); ?>">Blog</a>
                     </li>
                 </ul>
                 <?php if ($this->session->userdata('email')) {
@@ -105,15 +109,15 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-danger btn-join dropdown-toggle 12" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="<?= base_url('auth'); ?>"><?= $this->session->userdata('first_name') ?></a>
                             <div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="<?= base_url('auth') ?>">My Dashboard</a>
+                                <a class="dropdown-item" href="<?= base_url('myorder') ?>">My Order</a>
                                 <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>">Logout</a>
                             </div>
                         </li>
                     </ul>
                     <div class="cart-item">
-                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('pembayaran') ?>">
+                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('home/mycart') ?>">
                             <i class="fas fa-shopping-cart"></i> Cart
-                            <span class="badge badge-warning" id="cart_shop">0</span>
+                            <span class="badge badge-warning" id="cart_shop"><?= $mycart ?></span>
                         </a>
                     </div>
 
@@ -135,7 +139,7 @@
     </div> -->
     <!--end container -->
     <!-- Jumbotron -->
-    <div class="jb-2">
+    <div class="jb-3">
         <div class="container">
 
         </div>
@@ -153,18 +157,35 @@
         <!-- carousel -->
 
         <section class="row content1">
-
+            <div class="col-12">
+                <div class="card">
+                    <h1 class="card-title mt-3">Blog</h1>
+                    <div class="card-body"></div>
+                </div>
+            </div>
         </section>
 
+        <div class="row content1">
+            <div class="col-12">
+
+            </div>
+        </div>
 
 
+
+
+
+
+        <section class="content3">
+
+        </section>
 
 
     </div>
     <!-- End Card -->
 
     <!-- Contact -->
-    <section class="contact">
+    <section class="contact" id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 text-white">

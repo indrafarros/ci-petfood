@@ -136,7 +136,7 @@
                         </li>
                     </ul>
                     <div class="cart-item">
-                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('pembayaran') ?>">
+                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('home/mycart') ?>">
                             <i class="fas fa-shopping-cart"></i> Cart
                             <span class="badge badge-warning" id="cart_shop"><?= $mycart ?></span>
                         </a>
@@ -258,53 +258,9 @@
             </div>
         </section> -->
 
-        <section class="content3">
 
-        </section>
 
-        <!-- Content 2 -->
-        <!-- <section class="content2">
-            <div class="row text-center title">
-                <div class="col-12">
-                    <h3>Why rent a camera through us ?</h3>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row text-center quote">
-                                <div class="col-lg-3">
-                                    <i class="fas fa-cash-register fa-4x"></i>
-                                    <h4>Easy Payment</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
-                                </div>
-                                <div class="col-lg-3">
-                                    <i class="fas fa-money-bill-alt fa-4x"></i>
-                                    <h4>Lowest Price</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
-                                </div>
-                                <div class="col-lg-3">
-                                    <i class="fas fa-camera fa-4x"></i>
-                                    <h4>Lots Of Choices</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
-                                </div>
-                                <div class="col-lg-3">
-                                    <i class="fas fa-comment-dots fa-4x"></i>
-                                    <h4>24 Hour Support</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quis libero, ipsam cumque nesciunt aperiam unde</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> -->
-        <!-- End Content 2 -->
 
-        <!-- Content 3 -->
-
-        <!-- End Content 3 -->
 
         <!-- Content 4 -->
         <section class="content4">

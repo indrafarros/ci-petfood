@@ -66,9 +66,10 @@ $route['home'] = 'homecontroller';
 $route['home/(:any)'] = 'homecontroller/$1';
 $route['product'] = 'homecontroller/product';
 $route['success'] = 'homecontroller/ordersuccess';
+$route['myorder'] = 'homecontroller/myorder';
 // $route['products'] = 'homecontroller/products';
 
 $route['product/(:any)'] = 'homecontroller/products/$1';
 
 
-$route['blog'] = 'blogcontroller';
+$route['blog'] = 'homecontroller/blog';

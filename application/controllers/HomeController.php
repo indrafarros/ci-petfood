@@ -123,7 +123,7 @@ class HomeController extends CI_Controller
                             'created_at' => date('Y-m-d H:i:s')
                         );
                         $this->transaction->new_item($order_item);
-
+                        $get_order = $this->db->insert_id();
                         // $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                         // Order item success! </div>');
                         // redirect('home/orderSuccess');
@@ -131,7 +131,8 @@ class HomeController extends CI_Controller
                             'csrfName' => $this->security->get_csrf_token_name(),
                             'csrfHash' => $this->security->get_csrf_hash(),
                             'responce' => 'success',
-                            'message' => 'Transaction successfuly'
+                            'message' => 'Transaction successfuly',
+                            'order_id' => $get_order
                         );
                     } else {
 
@@ -146,7 +147,7 @@ class HomeController extends CI_Controller
                             'created_at' => date('Y-m-d H:i:s')
                         );
                         $this->transaction->new_order($new_data);
-
+                        $get_order = $this->db->insert_id();
                         $order_item = array(
                             'orders_id' => $this->db->insert_id(),
                             'product_id' => $id,
@@ -164,7 +165,8 @@ class HomeController extends CI_Controller
                             'csrfHash' => $this->security->get_csrf_hash(),
                             'responce' => 'success',
                             'message' => 'Add to cart successfuly',
-                            'test' => $user_cart = $this->transaction->getUserOrder($email, $id)
+                            'order_id' =>  $get_order
+                            // 'test' => $user_cart = $this->transaction->getUserOrder($email, $id)
                         );
                     }
                     // $post = array(
@@ -286,10 +288,12 @@ class HomeController extends CI_Controller
 
     public function myCart()
     {
+        is_login();
         $data = array(
+            'title' => 'My Cart',
             'session' => $this->session->userdata(),
             'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows(),
-            'product' => $this->transaction->getMyCart($this->session->userdata('email'))->result_array()
+            'product' => $this->transaction->checkCart($this->session->userdata('email'))->result_array()
         );
 
         $this->load->view('v_mycart', $data);
@@ -297,25 +301,60 @@ class HomeController extends CI_Controller
 
     public function orderSuccess()
     {
+        $order_id = $_GET['order_id'];
         $email = $this->session->userdata('email');
-        if ($email) {
-            $data = array(
-                'title' => 'Checkout success',
-                'session' => $this->session->userdata(),
-                'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows(),
-                'product' => $this->transaction->getMyCart($this->session->userdata('email'))->result_array()
-            );
 
-            $this->load->view('v_order_success', $data);
+        if ($this->transaction->getPendingOrder($email, $order_id)) {
+            if ($email) {
+                $data = array(
+                    'title' => 'Checkout success',
+                    'session' => $this->session->userdata(),
+                    'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows(),
+                    'product' => $this->transaction->getMyCart($this->session->userdata('email'))->result_array()
+                );
+
+                $this->load->view('v_order_success', $data);
+            } else {
+                redirect('home');
+            }
         } else {
             redirect('home');
         }
+        // if ($email) {
+        //     $data = array(
+        //         'title' => 'Checkout success',
+        //         'session' => $this->session->userdata(),
+        //         'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows(),
+        //         'product' => $this->transaction->getMyCart($this->session->userdata('email'))->result_array()
+        //     );
+
+        //     $this->load->view('v_order_success', $data);
+        // } else {
+        //     redirect('home');
+        // }
+    }
+
+    public function myOrder()
+    {
+        is_login();
+
+        $data = array(
+            'title' => 'My Order',
+            'session' => $this->session->userdata(),
+            'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows(),
+            'allcart' => $this->transaction->getAllOrder($this->session->userdata('email')),
+            'product' => $this->transaction->checkCart($this->session->userdata('email'))->result_array()
+        );
+
+        $this->load->view('v_myorder', $data);
     }
 
     public function blog()
     {
         $data = array(
-            'session' => $this->session->userdata()
+            'title' => 'Pet Shop | Blog',
+            'session' => $this->session->userdata(),
+            'mycart' => $this->transaction->getMyCart($this->session->userdata('email'))->num_rows()
         );
 
         $this->load->view('v_blog', $data);

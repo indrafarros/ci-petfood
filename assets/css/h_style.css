@@ -48,6 +48,16 @@ body {
     position: relative;
 }
 
+.jb-3 {
+    background-image: url(/ignited-petfood/assets/img/content/blog.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 420px;
+    background-repeat: no-repeat;
+    position: relative;
+    /* background-position: right; */
+}
+
 .jb-2 {
     background-image: url(/ignited-petfood/assets/img/content/cat.png);
     background-size: cover;
@@ -392,6 +402,15 @@ body {
     .jb-2 .display-4 {
         font-size: 48px;
         text-align: right;
+    }
+    .jb-3 {
+        background-image: url(/ignited-petfood/assets/img/content/blog.jpg);
+        background-size: cover;
+        text-align: center;
+        height: 420px;
+        background-repeat: no-repeat;
+        position: relative;
+        background-position: right;
     }
     .content1 {
         text-align: left;

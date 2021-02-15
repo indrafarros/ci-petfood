@@ -164,10 +164,10 @@ class AuthController extends CI_Controller
                         'role_id' => $user['role_id']
                     ];
                     $this->session->set_userdata($session);
-                    if ($user['roles'] == 1) {
+                    if ($user['role_id'] == 1) {
                         redirect('dashboard');
-                    } else {
-                        redirect('dashboard');
+                    } else if ($user['role_id'] == 2) {
+                        redirect('home');
                     }
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email or password wrong! </div>');

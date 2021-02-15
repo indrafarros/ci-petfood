@@ -129,13 +129,14 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-danger btn-join dropdown-toggle 12" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="<?= base_url('auth'); ?>"><?= $this->session->userdata('first_name') ?></a>
                             <div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="<?= base_url('auth') ?>">My Order</a>
+                                <a class="dropdown-item" href="<?= base_url('myorder') ?>">My Order</a>
+
                                 <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>">Logout</a>
                             </div>
                         </li>
                     </ul>
                     <div class="cart-item">
-                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('pembayaran') ?>">
+                        <a class="btn btn-danger btn-join ml-2 text-white" href="<?= base_url('home/mycart') ?>">
                             <i class="fas fa-shopping-cart"></i> Cart
                             <span class="badge badge-warning" id="cart_shop"><?= $mycart ?></span>
                         </a>
